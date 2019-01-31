@@ -1,0 +1,14 @@
+{
+    define: {
+        myLayout: "xuehuiniaoyu.github.oxpecker.view.MyLayout"
+    }
+
+    body: {
+        myLayout: {
+            height: auto
+            centerInParent: true
+            text1: "你好"
+            text2: "中国"
+        }
+    }
+}

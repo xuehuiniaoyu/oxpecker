@@ -1,0 +1,14 @@
+{
+    head: {
+        script:{
+            src: "{{assets}}/js/default_view.js"
+        }
+    }
+
+    body: {
+        {{default-view}}: {
+            id: view
+            onDraw: "javascript: onDraw"
+        }
+    }
+}

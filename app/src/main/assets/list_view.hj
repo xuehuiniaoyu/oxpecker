@@ -1,0 +1,23 @@
+{
+    body: {
+        {{list-view}}: {
+            id: listView
+            width: 100
+            height: 100
+            scrollBar: none
+            padding: [0, 0, 0, 0]
+            margin: [0, 0, 0, 0]
+            backgroundColor: "#cc0000"
+            divider: 0
+            //listSelector: "drawable/listSelector"
+            listSelector: "@null"
+            drawSelectorOnTop: false
+            //onItemClick: "javascript:itemClick"
+            //onItemSelected: "javascript:onFocus"
+            hGap: 1
+            vGap: 1
+            view: "{{assets}}/hjson/view.hjson"
+            data: "{{assets}}/hjson/list_item_data.hjson"
+        }
+    }
+}

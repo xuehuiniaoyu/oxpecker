@@ -1,0 +1,119 @@
+{
+    define: {
+        static: {
+            text: {
+                tag: {{text-view}}
+                attrs: {
+                    width: fill
+                    height: 10
+                    padding: ["10dp", "15dp", "10dp", "15dp"]
+                    margin: ["3dp", "1px", "3dp", 0]
+                    textSize: 18sp
+                    textColor: "#000000"
+                    background: "#cccccc"
+                    textAlign: center
+                }
+            }
+        }
+    }
+
+    head: {
+        script:
+            '''
+            __package.require("android.content.Intent").as("Intent");
+            __package.require("android.content.Context").as("Context");
+            __package.require("java.lang.Class").as("Class");
+            __reflect.from(__package);
+            function clickFunc(v) {
+                var pkg = "xuehuiniaoyu.github.oxpecker.activity";
+                var intent;
+
+                var layout;
+
+                switch(v.getId()) {
+                    case parseInt(__utils.ID("#id1")):
+                        layout = "textView.hj";
+                        break;
+
+                    case parseInt(__utils.ID("#id2")):
+                        layout = "button.hj";
+                        break;
+
+                    case parseInt(__utils.ID("#id3")):
+                        layout = "editText.hj";
+                        break;
+
+                    case parseInt(__utils.ID("#id4")):
+                        layout = "relativeLayout.hj";
+                        break;
+
+                    case parseInt(__utils.ID("#id5")):
+                        layout = "linearLayout.hj";
+                        break;
+
+                    case parseInt(__utils.ID("#id6")):
+                        layout = "weight.hj";
+                        break;
+
+                    case parseInt(__utils.ID("#id7")):
+                        layout = "list_view.hj";
+                        break;
+
+                    case parseInt(__utils.ID("#id8")):
+                        layout = "grid_view.hj";
+                        break;
+
+                    case parseInt(__utils.ID("#id9")):
+                        layout = "image_view.hj";
+                        break;
+
+                    case parseInt(__utils.ID("#id10")):
+                        //layout = "hello_world.hj";
+                        intent = __reflect.on("Intent").c_("Context", "Class").new_(__context, __reflect.loadClass(pkg+".HelloWorldActivity"));
+                        __context.startActivity(intent);
+                        return;
+
+                    case parseInt(__utils.ID("#id11")):
+                        layout = "default_view.hj";
+                        break;
+
+                    case parseInt(__utils.ID("#id12")):
+                        layout = "custom_layout.hj";
+                        break;
+
+                    case parseInt(__utils.ID("#id13")):
+                        layout = "pictures.hj";
+                        break;
+
+                    default:
+                        __console.toast("default " +v.getId())
+                }
+                intent = __reflect.on("Intent").c_("Context", "Class").new_(__context, __reflect.loadClass(pkg+".CustomActivity"));
+                intent.putExtra("layout", layout);
+                __context.startActivity(intent);
+            }
+            '''
+    }
+
+    body: {
+        background: "#6d9eeb"
+        {{vscroll-layout}}: {
+            {{linear-layout}}: {
+                orien: v
+                text: {id: "id1" text:"TextView" onClick:"javascript:clickFunc"}
+                text: {id: "id2" text:"Button" onClick:"javascript:clickFunc"}
+                text: {id: "id3" text:"EditText" onClick:"javascript:clickFunc"}
+                text: {id: "id4" text:"RelativeLayout" onClick:"javascript:clickFunc"}
+                text: {id: "id5" text:"LinearLayout" onClick:"javascript:clickFunc"}
+                text: {id: "id6" text:"Weight" onClick:"javascript:clickFunc"}
+                text: {id: "id7" text:"ListView" onClick:"javascript:clickFunc"}
+                text: {id: "id8" text:"GridView" onClick:"javascript:clickFunc"}
+                text: {id: "id9" text:"ImageView" onClick:"javascript:clickFunc"}
+                text: {id: "id10" text:"Hello! World!" onClick:"javascript:clickFunc"}
+                text: {id: "id11" text:"Canvas" onClick:"javascript:clickFunc"}
+                text: {id: "id12" text:"Custom Layout" onClick:"javascript:clickFunc"}
+                text: {id: "id13" text:"Pictures(图片欣赏)" onClick:"javascript:clickFunc"}
+            }
+        }
+    }
+}

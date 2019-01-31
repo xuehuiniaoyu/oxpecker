@@ -1,0 +1,18 @@
+{
+    body: {
+	backgroundColor: "#654321"
+	{{relative-layout}}: {
+	    height:80%
+	    {{text-view}}: {
+            width: "50"
+            height: "50"
+            id: "txt"
+            centerInParent: true
+            backgroundColor: "#90334400"
+            textColor:"#000000"
+            textAlign: center
+            text: "{{hello}} {{world }}"
+	    }
+	}
+    }
+}

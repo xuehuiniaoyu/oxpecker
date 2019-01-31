@@ -1,0 +1,22 @@
+{
+    body: {
+        {{text-view}}: {
+            width: auto
+            height: auto
+
+            text: "Hello! World!"
+            centerInParent: true
+        }
+
+
+        {{text-view}}: {
+            width: 100dp
+            height: auto
+            selected: true
+            lines: 1
+            textColor: "#ffffff"
+            textOverFlow: marquee
+            text: "荆防颗粒世纪东方抗裂砂浆反馈蓝色焦点开了房蓝色焦点付款了数据库楼附近蓝色焦点方会计师考虑到积分"
+        }
+    }
+}

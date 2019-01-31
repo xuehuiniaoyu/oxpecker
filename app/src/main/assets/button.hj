@@ -1,0 +1,11 @@
+{
+    body: {
+        {{button-view}}: {
+            width: auto
+            height: auto
+            
+            text: "Hello! World!"
+            centerInParent: true
+        }
+    }
+}

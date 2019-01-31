@@ -1,0 +1,21 @@
+{
+    body: {
+        {{img-view}}: {
+            width: 50%
+            height: 50%
+            centerInParent: true
+            src:"{{drawable}}/tubiao"
+        }
+
+        {{img-view}}: {
+            width: 50
+            height: 20
+            default: "@drawable/img_default"
+            error: "@drawable/error"
+            src: "http://hjson.org/hjson1.gif"
+            type: gif
+            scaleType: fit_xy
+            asParent: bottom|right
+        }
+    }
+}

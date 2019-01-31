@@ -1,0 +1,73 @@
+{
+    // 标签的生命和组件的申明
+    define: {
+        ### 申明一个名为 layotu 的组件，该组件是一个 relative-layout 组件
+        layout: {{relative-layout}}
+        static: {
+            ### 申明一个公共组件，名字为 text
+            text: {
+                tag: {{text-view}}
+                attrs: {
+                    width: auto
+                    height: auto
+                    textColor: "#ffffff"
+                    textSize: "20sp"
+                    centerInParent: true
+                }
+            }
+        }
+    }
+
+    head: {
+        script:
+            '''
+            __package.require("android.content.Intent").as("Intent");
+            __package.require("android.content.Context").as("Context");
+            __package.require("java.lang.Class").as("Class");
+            __reflect.from(__package);
+
+            function helloWorld() {
+                __console.toast("Hello, bird!");
+            }
+
+            '''
+    }
+
+    body: {
+        background: "{{drawable}}/tubiao"
+        layout: {
+            width: 60%
+            height: 50%
+            backgroundColor: "#ee00A0E9"
+            centerInParent: true
+
+            text: {
+                id: text1
+                textColor: "@color/colorAccent"
+                text: "hello! rhinoceros!"
+            }
+
+            text: {
+                id: text2
+                below: "#text1"
+                textSize: "25sp"
+                text: "Please Click Me!"
+                centerH: true
+                lines: 1
+                textOverFlow: end
+                textBold: true
+                margin: [0, 10, 0, 0]
+                onClick: "javascript: helloWorld"
+            }
+
+            text: {
+                below: "#text2"
+                text: "点我弹出对话框"
+                margin: [0, 2, 0, 0]
+                textSize: 16sp
+                textColor: "#000000"
+                onClick: "java: showDialog"
+            }
+        }
+    }
+}

@@ -1,0 +1,21 @@
+[
+    {
+        hello: "你好"
+        world: "中国"
+    }
+
+    {
+        hello: "Hello"
+        world: "China"
+    }
+
+    {
+        hello: "Hello"
+        world: "Bird"
+    }
+
+    {
+        hello: "Hello"
+        world: "Rhinoceros"
+    }
+]

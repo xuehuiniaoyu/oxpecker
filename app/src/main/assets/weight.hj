@@ -1,0 +1,25 @@
+{
+    body: {
+        heightSum: 9
+
+        {{relative-layout}}: {
+            id: layout1
+            heightWeight: 3
+            background: "#00ff00"
+        }
+
+        {{relative-layout}}: {
+            id: layout2
+            below: "#layout1"
+            heightWeight: 3
+            background: "#a64d79"
+        }
+
+        {{relative-layout}}: {
+            id: layout3
+            below: "#layout2"
+            heightWeight: 3
+            background: "#45818e"
+        }
+    }
+}

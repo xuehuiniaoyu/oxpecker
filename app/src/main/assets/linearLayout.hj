@@ -1,0 +1,75 @@
+{
+    body: {
+        {{linear-layout}}: {
+            orien: v
+            width: fill
+            height: fill
+
+            {{text-view}}: {
+                width: fill
+                height: 10
+                backgroundColor: "#00ff00"
+                textColor: "#000000"
+                textAlign: centerV
+                text: hello world
+                margin: [0, 5, 0, 0]
+            }
+
+            {{text-view}}: {
+                width: fill
+                height: 10
+                backgroundColor: "#3c78d8"
+                textColor: "#000000"
+                textAlign: centerV
+                text: hello world
+                margin: [0, 5, 0, 0]
+            }
+
+            {{text-view}}: {
+                width: fill
+                height: 10
+                backgroundColor: "#ff0000"
+                textColor: "#000000"
+                textAlign: centerV
+                text: hello world
+                margin: [0, 1, 0, 0]
+            }
+        }
+
+        {{linear-layout}}: {
+            orien: h
+            width: fill
+            height: 40
+            asParent: bottom
+
+            {{text-view}}: {
+                width: 20%
+                height: 100
+                backgroundColor: "#00ff00"
+                textColor: "#000000"
+                textAlign: centerV
+                text: hello world
+            }
+
+            {{text-view}}: {
+                width: 30%
+                height: 100
+                backgroundColor: "#3c78d8"
+                textColor: "#000000"
+                textAlign: centerV
+                text: hello world
+                margin: [1, 0, 0, 0]
+            }
+
+            {{text-view}}: {
+                width: 50%
+                height: 100
+                backgroundColor: "#ff0000"
+                textColor: "#000000"
+                textAlign: centerV
+                text: hello world
+                margin: [2, 0, 0, 0]
+            }
+        }
+    }
+}

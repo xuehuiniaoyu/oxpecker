@@ -1,0 +1,65 @@
+{
+    body: {
+        {{relative-layout}}: {
+            width: 100
+            height: 100
+            backgroundColor: "#3c78d8"
+
+            {{text-view}}: {
+                id: text1
+                width: 80
+                height: 20
+                text: Text1
+                textAlign:centerV
+                textColor: "#000000"
+                background: "#674ea7"
+            }
+
+            {{text-view}}: {
+                background: "#cc0000"
+                id: text2
+                below: "#text1"
+                asRight: "#text1"
+                width: 40
+                height: 20
+                text: Text2
+                textAlign:centerV
+                textColor: "#000000"
+            }
+
+            {{text-view}}: {
+                id: text3
+                rightOf: "#text2"
+                asTop: "#text2"
+                asBottom: "#text2"
+                width: fill
+                height: auto
+                text: Text3
+                margin: [1, 0, 1, 0]
+                textAlign:centerV
+                textColor: "#000000"
+                background: "#e06666"
+            }
+
+            {{text-view}}: {
+                width: 40
+                height: 30
+                asParent: right|bottom
+                text: Text3
+                textAlign:centerH|bottom
+                textColor: "#000000"
+                background: "#e06666"
+            }
+
+            {{text-view}}: {
+                width: auto
+                height: auto
+                text: 中心
+                textColor: "#000000"
+                centerInParent: true
+                textBold: true
+                textSize: 18sp
+            }
+        }
+    }
+}

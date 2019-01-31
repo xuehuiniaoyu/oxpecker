@@ -1,0 +1,29 @@
+{
+    head: {
+        script:
+            '''
+            var textView = __context.findViewById("#text");
+            textView.setText("Hello! World!");
+
+            function onTextChange(text) {
+                textView.setText(text);
+            }
+            '''
+    }
+    body: {
+        {{text-view}}: {
+            id: text
+        }
+
+        {{edit-view}}: {
+            id: edit
+            width: 80
+            height: 20
+
+            text: "Hello! World!"
+            centerInParent: true
+            textAlign: centerV
+            onTextChange: "javascript: onTextChange"
+        }
+    }
+}
