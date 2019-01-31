@@ -36,3 +36,10 @@ public void onDestroy() {
 	oxpecker.finishPecking();
 }
 ```
+##### If start running failure:
+```
+compileOptions {
+	sourceCompatibility JavaVersion.VERSION_1_8
+	targetCompatibility JavaVersion.VERSION_1_8
+}
+```
