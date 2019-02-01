@@ -10,7 +10,7 @@
                     margin: ["3dp", "1px", "3dp", 0]
                     textSize: 18sp
                     textColor: "#000000"
-                    background: "#cccccc"
+                    background: "@drawable/button_selector"
                     textAlign: center
                 }
             }
@@ -85,6 +85,10 @@
                         layout = "pictures.hj";
                         break;
 
+                    case parseInt(__utils.ID("#id14")):
+                        layout = "percentage.hj";
+                        break;
+
                     default:
                         __console.toast("default " +v.getId())
                 }
@@ -96,8 +100,9 @@
     }
 
     body: {
-        background: "#6d9eeb"
+        backgroundColor: @android:color/holo_blue_light
         {{vscroll-layout}}: {
+            scrollBar: none
             {{linear-layout}}: {
                 orien: v
                 text: {id: "id1" text:"TextView" onClick:"javascript:clickFunc"}
@@ -113,6 +118,7 @@
                 text: {id: "id11" text:"Canvas" onClick:"javascript:clickFunc"}
                 text: {id: "id12" text:"Custom Layout" onClick:"javascript:clickFunc"}
                 text: {id: "id13" text:"Pictures(图片欣赏)" onClick:"javascript:clickFunc"}
+                text: {id: "id14" text:"Percentage layout(百分比布局)" onClick:"javascript:clickFunc"}
             }
         }
     }

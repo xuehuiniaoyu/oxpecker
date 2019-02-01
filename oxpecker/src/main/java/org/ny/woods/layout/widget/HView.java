@@ -232,8 +232,15 @@ public class HView<T extends View> extends HNode {
         name = name.substring(1);
         String[] scopeAndName = name.split("/");
         if (scopeAndName.length == 2) {
-            int drawable = getReflect().clear().on(getContext().getPackageName() + ".R$" + scopeAndName[0]).get(scopeAndName[1]);
-            return drawable;
+            String scope = scopeAndName[0];
+            if(scope.contains("android:")) {
+                int drawable = getReflect().clear().on("android.R$" + scope.substring(8)).get(scopeAndName[1]);
+                return drawable;
+            }
+            else {
+                int drawable = getReflect().clear().on(getContext().getPackageName() + ".R$" + scope).get(scopeAndName[1]);
+                return drawable;
+            }
         }
         return -1;
     }
@@ -368,14 +375,11 @@ public class HView<T extends View> extends HNode {
         if (valueString.contains("#")) {
             return Color.parseColor(value.asString());
         }
-        else if(valueString.contains("@color/")) {
-            int colorId = getResourceId(valueString);
-            if(colorId == -1) {
-                throw new HException(valueString + " is not Color!");
-            }
-            return context.getResources().getColor(colorId);
+        int colorId = getResourceId(valueString);
+        if(colorId == -1) {
+            throw new HException(valueString + " is not Color!");
         }
-        return Color.TRANSPARENT;
+        return context.getResources().getColor(colorId);
     }
 
     /**
@@ -415,7 +419,7 @@ public class HView<T extends View> extends HNode {
                 }
             });
         }
-        else if(valueString.contains("#") || valueString.contains("@color/")) {
+        else if(valueString.contains("#") || valueString.contains("@color/") || valueString.contains("@android:color/")) {
             setBackgroundColor(value);
         }
         else {
@@ -452,6 +456,35 @@ public class HView<T extends View> extends HNode {
                 mView.setPadding((int) dimens.getWidth(array.get(0)).getSize(), (int) dimens.getHeight(array.get(1)).getSize(), (int) dimens.getWidth(array.get(2)).getSize(), (int) dimens.getHeight(array.get(3)).getSize());
             }
         });
+    }
+
+    /**
+     * 设置滚动条显示
+     *
+     * @param value
+     */
+    public void setScrollBar(JsonValue value) {
+        switch (value.asString()) {
+            case "left": {
+                mView.setVerticalScrollBarEnabled(true);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+                    mView.setVerticalScrollbarPosition(View.SCROLLBAR_POSITION_LEFT);
+                }
+                break;
+            }
+            case "right": {
+                mView.setVerticalScrollBarEnabled(true);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+                    mView.setVerticalScrollbarPosition(View.SCROLLBAR_POSITION_RIGHT);
+                }
+                break;
+            }
+            case "none": {
+                mView.setHorizontalScrollBarEnabled(false);
+                mView.setVerticalScrollBarEnabled(false);
+                break;
+            }
+        }
     }
 
     /**
@@ -668,6 +701,19 @@ public class HView<T extends View> extends HNode {
     @Extension("heightSum")
     public void setHeightWeightSum(JsonValue value) {
         mViewLp.heightWeightSum = value.asInt();
+    }
+
+    public void setFocusable(JsonValue value) {
+        mView.setFocusable(value.asBoolean());
+    }
+
+    public void setClickable(JsonValue value) {
+        mView.setClickable(value.asBoolean());
+    }
+
+    @Extension("enable")
+    public void setEnabled(JsonValue value) {
+        mView.setEnabled(value.asBoolean());
     }
 
     /**

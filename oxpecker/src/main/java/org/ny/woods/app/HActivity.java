@@ -115,6 +115,9 @@ public class HActivity extends Activity {
         return hTemplate;
     }
 
+    public Oxpecker getOxpecker() {
+        return oxpecker;
+    }
 
     /**
      * 通过名称启动Activity

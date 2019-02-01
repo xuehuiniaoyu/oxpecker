@@ -20,15 +20,19 @@ public class ColorManager extends NativeObjInfo {
         if(name == null)
             return Color.TRANSPARENT;
 
-        if(name.contains("@color/")) {
-            name = name.substring("@color/".length());
-        }
-
         if(reflect == null) {
             reflect = new Reflect();
         }
+        int colorId = -1;
+        if(name.contains("@color/")) {
+            name = name.substring("@color/".length());
+            colorId = reflect.clear().on(getContext().getPackageName()+".R$color").get(name);
+        }
+        else if(name.contains("@android:color/")) {
+            name = name.substring("@android:color/".length());
+            colorId = reflect.clear().on("android.R$color").get(name);
+        }
 
-        int colorId = reflect.clear().on(getContext().getPackageName()+".R$color").get(name);
         if(colorId != -1) {
             return getContext().getResources().getColor(colorId);
         }

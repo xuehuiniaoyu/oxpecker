@@ -139,35 +139,6 @@ public class AdapterWapper<T extends AbsListView> extends HView<T> {
         }
     }
 
-    /**
-     * 设置滚动条显示
-     *
-     * @param value
-     */
-    public void setScrollBar(JsonValue value) {
-        switch (value.asString()) {
-            case "left": {
-                mView.setVerticalScrollBarEnabled(true);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-                    mView.setVerticalScrollbarPosition(View.SCROLLBAR_POSITION_LEFT);
-                }
-                break;
-            }
-            case "right": {
-                mView.setVerticalScrollBarEnabled(true);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-                    mView.setVerticalScrollbarPosition(View.SCROLLBAR_POSITION_RIGHT);
-                }
-                break;
-            }
-            case "none": {
-                mView.setHorizontalScrollBarEnabled(false);
-                mView.setVerticalScrollBarEnabled(false);
-                break;
-            }
-        }
-    }
-
     @Override
     public void setJsChannel(JsChannel jsChannel) {
         super.setJsChannel(jsChannel);

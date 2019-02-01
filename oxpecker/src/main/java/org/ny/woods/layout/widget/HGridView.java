@@ -13,7 +13,8 @@ public class HGridView extends AdapterWapper<GridView> {
         super(context, value);
     }
 
-    public void setColumns(JsonValue value) {
+    @Extension("columns")
+    public void setNumColumns(JsonValue value) {
         mView.setNumColumns(value.asInt());
     }
 

@@ -20,7 +20,6 @@ import org.ny.woods.js.native_object.console.Console;
 import org.ny.woods.js.native_object.net.Net;
 import org.ny.woods.js.native_object.reflect.RobustReflect;
 import org.ny.woods.js.native_object.util.Utils;
-import org.ny.woods.js.native_object.window.Document;
 import org.ny.woods.layout.widget.HView;
 import org.ny.woods.template.HTemplate;
 import org.ny.woods.template.SimpleHTemplate;
@@ -239,7 +238,6 @@ public class Oxpecker {
             mSilentlyJsChannel.addJavaScriptInterface("__context", context);
             mSilentlyJsChannel.addJavaScriptInterface("__reflect", new RobustReflect());
             mSilentlyJsChannel.addJavaScriptInterface("__console", new Console(context));
-            mSilentlyJsChannel.addJavaScriptInterface("__document", new Document(context));
             mSilentlyJsChannel.addJavaScriptInterface("__net", new Net(context));
             mSilentlyJsChannel.addJavaScriptInterface("__package", new JavaPackage());
             mSilentlyJsChannel.addJavaScriptInterface("__utils", new Utils(context));

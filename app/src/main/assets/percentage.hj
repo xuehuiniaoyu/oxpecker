@@ -1,0 +1,52 @@
+{
+    define: {
+        static: {
+            text: {
+                tag: {{text-view}}
+                attrs: {
+                    width: auto
+                    height: auto
+                    textColor: "#000000"
+                    text: "50%"
+                }
+            }
+        }
+    }
+    body: {
+        background: "#434343"
+        {{relative-layout}}: {
+            width: 50%
+            height: 50%
+            text: {}
+            background: "#00ffff"
+            centerInParent: true
+
+
+            {{relative-layout}}: {
+                width: 50%
+                height: 50%
+                text: {}
+                background: "#8e7cc3"
+                centerInParent: true
+
+
+                {{relative-layout}}: {
+                    width: 50%
+                    height: 50%
+                    text: {}
+                    background: "#ff0000"
+                    centerInParent: true
+
+
+                    {{relative-layout}}: {
+                        width: 50%
+                        height: 50%
+                        text: {}
+                        background: "#ffffff"
+                        centerInParent: true
+                    }
+                }
+            }
+        }
+    }
+}
