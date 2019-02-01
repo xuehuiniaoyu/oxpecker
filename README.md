@@ -639,7 +639,7 @@ __color.parseColor("#ffffff")
 
 当然你可以添加你自己的java对象给js使用
 
-你要做的首先是拿到hTemplate对象
+你要做的首先是拿到Oxpecker对象
 
 如果是HActivity中使用那就比较简单
 
