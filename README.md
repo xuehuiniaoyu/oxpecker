@@ -57,10 +57,6 @@ compileOptions {
 }
 ```
 
-
-
-
-
 下面是一个简单例子的布局代码：
 
 ```
@@ -94,10 +90,6 @@ compileOptions {
     }
 }
 ```
-
-
-
-
 
 *demo*
 
@@ -316,6 +308,26 @@ view: 布局，也可以是uri形式如：
 view: "{{assets}}/demo/view.hjson"
 
 {{name}} 和 {{sex}} 是自动填充的值，跟data中的name和sex匹配
+
+
+
+事件
+
+onItemClick: "javascript: itemClick" --------------> function itemClick(parent, view, position, id)
+
+onItemLongClick: "javascript: itemLongClick" --------------> function itemLongClick(parent, view, position, id)
+
+onItemSelected: "javascript: itemSelected"  -------------->  function itemSelected(parent, view, position, id) 
+
+
+
+所有view都拥有的事件
+
+onClick: "java: click" -------------> function click(v)
+
+onLongClick: "java: longClick" -------------> function longClick(v)
+
+onFocus: "javascript: focus" -------------> function focus(v, hasFocus)
 
 ## (网格布局) grid-view
 
@@ -663,3 +675,31 @@ parent.addView(v);
 
 oxpecker.startPecking();
 ```
+
+
+
+## 事件管理对象 FunctionExec
+
+1. 配置事件
+
+```
+onClick: "javascript: clickMethod"
+```
+
+2. 事件接收器接收到配置后会执行如下代码
+
+```
+FunctionExec functionExec = new FunctionExec(jsonValue, value1, value2, ...);
+
+functionExec.exec(getContext(), getJsChannel(), getReflect());
+```
+
+3. javascript的代码被执行
+
+```
+function clickMethod(view) {
+    
+}
+```
+
+
