@@ -57,6 +57,48 @@ compileOptions {
 }
 ```
 
+
+
+
+
+下面是一个简单例子的布局代码：
+
+```
+{
+    define: {
+        static: {
+            img: {
+                tag: {{img-view}}
+                attrs: {
+                    width: fill
+                    height: auto
+                }
+            }
+        }
+    }
+    body: {
+        {{vscroll-layout}}: {
+            {{linear-layout}}: {
+                background: "#cccccc"
+                orien: v
+                img:{ src: "{{assets}}/images/img1.png" }
+                img:{ src: "{{assets}}/images/img2.png" }
+                img:{ src: "{{assets}}/images/img3.png" }
+                img:{ src: "{{assets}}/images/img4.png" }
+                img:{ src: "{{assets}}/images/img5.png" }
+                img:{ src: "{{assets}}/images/img6.jpg" }
+                img:{ src: "{{assets}}/images/img7.jpg" }
+                img:{ src: "{{assets}}/images/img8.jpg" }
+            }
+        }
+    }
+}
+```
+
+
+
+
+
 *demo*
 
 ![图片演示](demo1.gif)
