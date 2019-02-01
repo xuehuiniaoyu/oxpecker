@@ -25,7 +25,7 @@ allprojects {
 
 ```
 dependencies {
-    implementation 'com.github.xuehuiniaoyu:oxpecker:v1.0'
+    implementation 'com.github.xuehuiniaoyu:oxpecker:v1.1'
 }
 ```
 
@@ -67,11 +67,11 @@ compileOptions {
 
 {{relative-layout}} :{
 
-    width: 100
-
-    height: 100
-
-    ...
+    width: 100
+    
+    height: 100
+    
+    ...
 
 }
 
@@ -99,13 +99,9 @@ width:10h 占父容器高度的10/100
 
 width:10%h 占父容器高度的10%
 
-
-
 #### height 高度
 
 同width属性相似
-
-
 
 #### margin 边距
 
@@ -115,13 +111,9 @@ margin:\["10%", "10%", "10%", "10%"\]  各占10%
 
 margin:\[\"10dp", "10%", 10, "10h"]  left:10dp  top:10%  right:10/100  bottom:父容器高度的10/100
 
-
-
 #### padding
 
 同margin属性相似
-
-
 
 #### Relative to other components 相对于组件
 
@@ -143,8 +135,6 @@ topOf: "#id1"
 
 bottomOf: "#id1"
 
-
-
 asTop: "#id1" 和(id: id1) 组件的top齐平
 
 asBottom: "#id1" 和(id: id1) 组件的bottom齐平
@@ -152,8 +142,6 @@ asBottom: "#id1" 和(id: id1) 组件的bottom齐平
 asLeft: "#id1" 和(id: id1) 组件的left齐平
 
 asRight: "#id1" 和(id: id1) 组件的right齐平
-
-
 
 *相对于父容器*
 
@@ -177,17 +165,11 @@ asParent: centerH|bottom 在父容器的下边同时横向居中
 
 asParent: centerV 在父容器纵向居中的显示
 
-
-
 centerHorizontal : true 水平居中( 你也可以 centerH或center_h)
 
 centerVertical: true 垂直居中 ( 你也可以 centerV 或 center_v)
 
-
-
 centerInParent: true 基于父容器居中
-
-
 
 #### weight 平分
 
@@ -195,21 +177,15 @@ widthWeightSum: 9 表示子（children）将在宽度上平分该权重
 
 widthWeight: 3 表示占父容器（parent）宽度的3/9
 
-
-
 heightWeightSum: 9
 
 heightWeight: 4
-
-
 
 clickable: true 可以点击
 
 focusable: true 可以获取焦点
 
 enabled: true 被激活( 你也可以 enable: true)
-
-
 
 #### background 背景
 
@@ -218,8 +194,6 @@ backgroundColor: "#ffffff"
 backgroundColor: "@color/colorId"
 
 backgroundColor: "@android:color/colorId"
-
-
 
 background: "#ffffff"
 
@@ -234,8 +208,6 @@ background: "@android:drawable/drawableId"
 background: "{{assets}}/a.jpg"
 
 background: "{{drawable}}/a"
-
-
 
 ## (线性布局) linear-layout
 
@@ -253,67 +225,55 @@ orien: h
 
 orien: v
 
-
-
-## (横向滚动布局) hscroll-layout
+## (横向滚动布局) hscroll-layout
 
 ## (纵向滚动布局) vscroll-layout
-
-
 
 ## (列表) list-view
 
 {{list-view}}: {
 
-    width: fill
-
-    height: fill
-
-    listSelector: "@drawable/bmp" // 设置焦点样式，可以是图片也可以是资源
-
-    drawSelectorOnTop: true // 焦点框画在页面之上
-
-    data: [
-
-        {name: "张桑" sex: “男"}
-
-        {name: "李四" sex: "女"}
-
-    ]
-
-    view: {
-
-        body: {
-
-            {{text-view}}: {
-
-                text: "姓名：{{name}} 性别：{{sex}}"
-
-            }
-
-        }
-
-    }
+    width: fill
+    
+    height: fill
+    
+    listSelector: "@drawable/bmp" // 设置焦点样式，可以是图片也可以是资源
+    
+    drawSelectorOnTop: true // 焦点框画在页面之上
+    
+    data: [
+    
+        {name: "张桑" sex: “男"}
+    
+        {name: "李四" sex: "女"}
+    
+    ]
+    
+    view: {
+    
+        body: {
+    
+            {{text-view}}: {
+    
+                text: "姓名：{{name}} 性别：{{sex}}"
+    
+            }
+    
+        }
+    
+    }
 
 }
-
-
 
 data: hjson数组格式，也可以是uri形式如：
 
 data: "http://localhost:8080/demo/data.hjson"
 
-
-
 view: 布局，也可以是uri形式如：
 
 view: "{{assets}}/demo/view.hjson"
 
-
-
 {{name}} 和 {{sex}} 是自动填充的值，跟data中的name和sex匹配
-
-
 
 ## (网格布局) grid-view
 
@@ -328,8 +288,6 @@ horizontalSpacing: “2w” 横向间距
 vGap: 2
 
 hGap: 2
-
-
 
 ## (文本框) text-view
 
@@ -361,59 +319,49 @@ center_vertical | center_v| centerV 垂直居中
 
 center_horizontal | center_h | centerH 横向居中
 
-
-
 textAlign属性可以同时设置多项：
 
 textAlign: right|bottom
-
-
 
 ## (编辑框) edit-view
 
 ## (按钮) button-view
 
-
-
 ## (图片控件) img-view
 
 {{img-view}}: {
 
-    width: 100
-
-    height: 60
-
-    scaleType: fit_xy|center|fit_start|fit_center|fit_end|matrix 显示样式
-
-    type: gif | bitmap | drawable 图片类型
-
-    default: @drawable/placeholder 占位图片
-
-    error: @drawable/error 图片加载失败后的显示图
-
-    //src: "@drawable/a"
-
-    //src: "{{assets}}/bmp.jpg"
-
-    src: "http://localhost:8080/demo/bmp.gif" 图片地址
+    width: 100
+    
+    height: 60
+    
+    scaleType: fit_xy|center|fit_start|fit_center|fit_end|matrix 显示样式
+    
+    type: gif | bitmap | drawable 图片类型
+    
+    default: @drawable/placeholder 占位图片
+    
+    error: @drawable/error 图片加载失败后的显示图
+    
+    //src: "@drawable/a"
+    
+    //src: "{{assets}}/bmp.jpg"
+    
+    src: "http://localhost:8080/demo/bmp.gif" 图片地址
 
 }
-
-
 
 ## (画布) default-view
 
 {{default-view}}: {
 
-    width: fill
-
-    height: fill
-
-    onDraw: "javascript: onDraw"
+    width: fill
+    
+    height: fill
+    
+    onDraw: "javascript: onDraw"
 
 }
-
-
 
 onDraw 指向js方法onDraw
 
@@ -434,8 +382,6 @@ onDraw 指向js方法onDraw
     }  
 
 }
-
-
 
 js代码：
 
@@ -466,13 +412,9 @@ var mView
 
 }
 
-
-
 在屏幕中画了一个圆
 
 关于js中如何使用java工具类，将在后面介绍
-
-
 
 ## (自定义) define
 
@@ -481,28 +423,26 @@ var mView
 ```
 {
 
-    define: {  
+    define: {  
 
-        ...
+        ...
 
-    }
+    }
 
-    head: {
+    head: {
 
-        ...
+        ...
 
-    }
+    }
 
-    body: {
+    body: {
 
-        ...
+        ...
 
-    }
+    }
 
 }
 ```
-
-
 
 ###### 1.如果你有自定义的View要在布局中使用，你必须先要在define中进行注册
 
@@ -513,11 +453,9 @@ var mView
 
 define:{
 
-    myLayout: "xuehuiniaoyu.github.oxpecker.view.MyLayout"
+    myLayout: "xuehuiniaoyu.github.oxpecker.view.MyLayout"
 
 }
-
-
 ```
 
 下面你可以使用
@@ -525,69 +463,61 @@ define:{
 ```
 
 myLayout: {
-    width: fill
-    height: fill
-    ...
+    width: fill
+    height: fill
+    ...
 }
 ```
-
-
 
 ###### 2.如果你的布局中有大量重复配置，你希望一个公共组件来帮你完成这些繁琐的配置。
 
 ```
-define {  
+define {  
 
-    static: {  
+    static: {  
 
-        // 申明一个公共组件，名为layout1
+        // 申明一个公共组件，名为layout1
 
-        layout1: {
+        layout1: {
 
-            tag: {{relative-layout}}
+            tag: {{relative-layout}}
 
-            attrs: {
+            attrs: {
 
-                width: fill
+                width: fill
 
-                height: fill
+                height: fill
 
-                background: "#cccccc"
+                background: "#cccccc"
 
-                ......
+                ......
 
-            }
+            }
 
-        }
+        }
 
-    }
+    }
 
 }
 
 body: {
 
-    layout1: {
+    layout1: {
 
-    }
+    }
 
-    layout1: {
+    layout1: {
 
-    }
+    }
 
 }
 ```
-
-
 
 ## js能够天然访问的java对象
 
 __context 上下文对象，也就是当前的Activity对象
 
 __package 包管理器
-
-
-
-
 
 __reflect 反射工具类:
 
@@ -604,55 +534,37 @@ var object = __reflect.on(obj).method("methodName", clz).invoke("hello");
 如果__reflect被重复使用，建议在使用之前先.clear() 比如：
 __reflect.clear().on(obj)
 
-
-
-
-
-
-
 __console 控制台
 
 __console.toast("") 弹出显示内容
 
 __console.log("") Log显示内容
 
-
-
-
-
-
-
 __net 网络工具
 
 __net.okHttp({
 
-    method: "post",
-
-    url: "http://",
-
-    contentType: "application/json",
-
-    body: "",
-
-    success: function(msg) {
-
-
-
-    },
-
-    error: function(e) {
-
-
-
-    }
+    method: "post",
+    
+    url: "http://",
+    
+    contentType: "application/json",
+    
+    body: "",
+    
+    success: function(msg) {
+    
+    
+    
+    },
+    
+    error: function(e) {
+    
+    
+    
+    }
 
 });
-
-
-
-
-
-
 
 __utils 工具类
 
@@ -662,12 +574,6 @@ __utils.md5("hello world") 计算字符串的md5
 
 __utils.md5(file) // 计算文件的md5
 
-
-
-
-
-
-
 __color 颜色工具类
 
 __color.getColor("@color/colorId")
@@ -675,10 +581,6 @@ __color.getColor("@color/colorId")
 __color.getColor("@android:color/colorId")
 
 __color.parseColor("#ffffff")
-
- 
-
-
 
 ## 这些你都觉得不够
 
@@ -688,8 +590,6 @@ __color.parseColor("#ffffff")
 
 如果是HActivity中使用那就比较简单
 
-
-
 ```
 getOxpecker().addJavaScriptInterface("obj1", new MyObj());
 
@@ -697,8 +597,6 @@ getOxpecker().addJavaScriptInterface("obj2", new MyObj());
 
 setContentViewFromAssets("main.hj");
 ```
-
-
 
 如果是自定义使用的
 
@@ -709,7 +607,7 @@ hTemplate.as("layout1", MyLayout.class.getName());
 
 Oxpecker oxpecker = new Oxpecker(this, hTemplate);
 
-        
+
 // 添加自定义java交互对象
 oxpecker.addJavaScriptInterface("name1", new MyObj());
 
@@ -720,8 +618,6 @@ View v = oxpecker.parse(template).getView();
 
 parent.addView(v);
 
-        
+
 oxpecker.startPecking();
 ```
-
-
