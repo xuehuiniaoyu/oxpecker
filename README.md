@@ -5,6 +5,7 @@ The android UI framework, based on hjson format
 (android UI框架，用hjson格式写布局: 支持注释、容错性高、宜读、扩展性强)
 
 * [hjson是json的扩展，可以在json中加入注释，约束性没有json那么强，所以适合做配置文件。](http://hjson.org/)
+* [模板用handlebars.java超的替换能力](https://github.com/jknack/handlebars.java)
 
 ![图](timg.jpg)
 
@@ -309,8 +310,6 @@ view: "{{assets}}/demo/view.hjson"
 
 {{name}} 和 {{sex}} 是自动填充的值，跟data中的name和sex匹配
 
-
-
 事件
 
 onItemClick: "javascript: itemClick" --------------> function itemClick(parent, view, position, id)
@@ -318,8 +317,6 @@ onItemClick: "javascript: itemClick" --------------> function itemClick(parent, 
 onItemLongClick: "javascript: itemLongClick" --------------> function itemLongClick(parent, view, position, id)
 
 onItemSelected: "javascript: itemSelected"  -------------->  function itemSelected(parent, view, position, id) 
-
-
 
 所有view都拥有的事件
 
@@ -676,9 +673,7 @@ parent.addView(v);
 oxpecker.startPecking();
 ```
 
-
-
-## 事件管理对象 FunctionExec
+## 事件管理对象 FunctionExec
 
 1. 配置事件
 
@@ -698,8 +693,6 @@ functionExec.exec(getContext(), getJsChannel(), getReflect());
 
 ```
 function clickMethod(view) {
-    
+
 }
 ```
-
-
