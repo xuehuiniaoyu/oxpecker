@@ -4,8 +4,10 @@ The android UI framework, based on hjson format
 
 (android UI框架，用hjson格式写布局: 支持注释、容错性高、宜读、扩展性强)
 
-* [hjson是json的扩展，可以在json中加入注释，约束性没有json那么强，所以适合做配置文件。](http://hjson.org/)
-* [模板用handlebars.java超的替换能力](https://github.com/jknack/handlebars.java)
+* [布局框架 hjson](http://hjson.org/)
+* [模板框架 handlebars.java](https://github.com/jknack/handlebars.java)
+* [网络框架 okHttp](https://github.com/square/okhttp)
+* [图片框架 glide](https://github.com/bumptech/glide)
 
 ![图](timg.jpg)
 
