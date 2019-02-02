@@ -8,7 +8,7 @@ The android UI framework, based on hjson format
 * [模板框架 handlebars.java](https://github.com/jknack/handlebars.java)
 * [网络框架 okHttp](https://github.com/square/okhttp)
 * [图片框架 glide](https://github.com/bumptech/glide)
-* [javascript框架](https://developer.mozilla.org/zh-CN/docs/Mozilla/Projects/Rhino)
+* [javascript框架 Rhion](https://developer.mozilla.org/zh-CN/docs/Mozilla/Projects/Rhino)
 
 ![图](timg.jpg)
 
