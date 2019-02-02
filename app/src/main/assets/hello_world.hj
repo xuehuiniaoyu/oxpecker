@@ -34,7 +34,7 @@
     }
 
     body: {
-        background: "{{drawable}}/tubiao"
+        background: "{{drawable}}/oxpecker"
         layout: {
             width: 60%
             height: 50%

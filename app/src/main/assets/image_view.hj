@@ -4,7 +4,7 @@
             width: 50%
             height: 50%
             centerInParent: true
-            src:"{{drawable}}/tubiao"
+            src:"{{drawable}}/oxpecker"
         }
 
         {{img-view}}: {
