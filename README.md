@@ -2,7 +2,7 @@
 
 The android UI framework, based on hjson format
 
-(android UI框架，用hjson格式写布局: 支持注释、容错性高、宜读、扩展性强)
+(android 动态框架，用hjson格式写布局: 支持注释、容错性高、宜读、扩展性强)
 
 * [布局框架 hjson](http://hjson.org/)
 * [模板框架 handlebars.java](https://github.com/jknack/handlebars.java)
