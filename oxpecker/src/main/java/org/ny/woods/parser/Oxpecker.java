@@ -9,7 +9,6 @@ import android.view.View;
 
 import org.ny.woods.dimens.HDimens;
 import org.ny.woods.dimens.PercentDimens;
-import org.ny.woods.exception.HLayoutException;
 import org.ny.woods.interceptor.BodyInterceptor;
 import org.ny.woods.interceptor.ScriptInterceptor;
 import org.ny.woods.js.channel.JsChannel;
@@ -21,6 +20,8 @@ import org.ny.woods.js.native_object.net.Net;
 import org.ny.woods.js.native_object.reflect.RobustReflect;
 import org.ny.woods.js.native_object.util.Utils;
 import org.ny.woods.layout.widget.HView;
+import org.ny.woods.layout.widget.i.ViewPart;
+import org.ny.woods.parser.proxy.DynamicProxy;
 import org.ny.woods.template.HTemplate;
 import org.ny.woods.template.SimpleHTemplate;
 import org.ny.woods.utils.IDUtil;
@@ -29,62 +30,81 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Proxy;
 import java.util.HashMap;
 
 public class Oxpecker {
 
     public interface OnPackListener {
         void onFailed(Exception e, Oxpecker oxpecker);
-        void onSuccess(HView<? extends View> hView, Oxpecker oxpecker);
+        void onSuccess(ViewPart<? extends View> hView, Oxpecker oxpecker);
     }
 
-    public static final class OxpeckerType<T> {
-        T type;
-        HView<? extends View> hView;
+    public static final class AsyncTytpe {
+        public static final int FILE = 0;
+        public static final int STRING = 1;
+        public static final int STREAM = 2;
+
+        int type;
+        Object obj;
+
+        ViewPart<? extends View> hView;
         String layout;
         Exception err;
         OnPackListener onPackListener;
 
-        public OxpeckerType(T type) {
+        public AsyncTytpe(Object obj, int type) {
+            this.obj = obj;
             this.type = type;
         }
     }
 
-    public void inflaterAsync(OxpeckerType<?> oxpeckerType, OnPackListener onPackListener) {
-        oxpeckerType.onPackListener = onPackListener;
+    /**
+     * 异步加载View
+     * @param asyncTytpe
+     * @param onPackListener
+     */
+    public void inflaterAsync(AsyncTytpe asyncTytpe, OnPackListener onPackListener) {
+        asyncTytpe.onPackListener = onPackListener;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.CUPCAKE) {
-            final AsyncTask<OxpeckerType<?>, Void, OxpeckerType<?>> asyncTask
-                    = new AsyncTask<OxpeckerType<?>, Void, OxpeckerType<?>>() {
+            final AsyncTask<AsyncTytpe, Void, AsyncTytpe> asyncTask
+                    = new AsyncTask<AsyncTytpe, Void, AsyncTytpe>() {
                 @Override
-                protected OxpeckerType<?> doInBackground(OxpeckerType<?>... inflaterTypes) {
-                    OxpeckerType<?> oxpeckerType = inflaterTypes[0];
-                    if(oxpeckerType.type instanceof File) {
-                        try {
-                            oxpeckerType.layout = hTemplate.apply(new FileInputStream((File) oxpeckerType.type));
-                        } catch (IOException e) {
-                            oxpeckerType.err = e;
+                protected AsyncTytpe doInBackground(AsyncTytpe... inflaterTypes) {
+                    AsyncTytpe asyncTytpe = inflaterTypes[0];
+                    switch (asyncTytpe.type) {
+                        case AsyncTytpe.FILE: {
+                            try {
+                                asyncTytpe.layout = hTemplate.apply(new FileInputStream((File) asyncTytpe.obj));
+                            } catch (IOException e) {
+                                asyncTytpe.err = e;
+                            }
+                            break;
+                        }
+                        case AsyncTytpe.STRING: {
+                            try {
+                                asyncTytpe.layout = hTemplate.apply((String) asyncTytpe.obj);
+                            } catch (IOException e) {
+                                asyncTytpe.err = e;
+                            }
+                            break;
+                        }
+                        case AsyncTytpe.STREAM: {
+                            try {
+                                asyncTytpe.layout = hTemplate.apply((InputStream) asyncTytpe.obj);
+                            } catch (IOException e) {
+                                asyncTytpe.err = e;
+                            }
+                            break;
                         }
                     }
-                    else if(oxpeckerType.type instanceof String) {
-                        try {
-                            oxpeckerType.layout = hTemplate.apply((String) oxpeckerType.type);
-                        } catch (IOException e) {
-                            oxpeckerType.err = e;
-                        }
-                    }
-                    else if(oxpeckerType.type instanceof InputStream) {
-                        try {
-                            oxpeckerType.layout = hTemplate.apply((InputStream) oxpeckerType.type);
-                        } catch (IOException e) {
-                            oxpeckerType.err = e;
-                        }
-                    }
-                    oxpeckerType.hView = inflater(oxpeckerType.layout);
-                    return oxpeckerType;
+                    asyncTytpe.hView = inflater(asyncTytpe.layout);
+                    return asyncTytpe;
                 }
 
                 @Override
-                protected void onPostExecute(OxpeckerType<?> inflaterType) {
+                protected void onPostExecute(AsyncTytpe inflaterType) {
                     if(inflaterType.err != null) {
                         inflaterType.onPackListener.onFailed(inflaterType.err, Oxpecker.this);
                     }
@@ -93,7 +113,7 @@ public class Oxpecker {
                     }
                 }
             };
-            asyncTask.execute(oxpeckerType);
+            asyncTask.execute(asyncTytpe);
         }
     }
 
@@ -132,15 +152,8 @@ public class Oxpecker {
     private ScriptInterceptor mScriptInterceptor;
 
 
-    private HView<? extends View> hView;
+    private ViewPart<? extends View> hView;
     private SilentlyJsChannel mSilentlyJsChannel;
-
-    /**
-     *
-     *
-     * 异步解析回调接口
-     */
-    private OnPackListener onPackListener;
 
     public Oxpecker(Oxpecker oxpecker) {
         this.context = oxpecker.context;
@@ -225,7 +238,7 @@ public class Oxpecker {
 //
 //    };
 
-    public HView<? extends View> inflater(String layout) {
+    public ViewPart<? extends View> inflater(String layout) {
         //layout = layout.replace("&quot;", "\"");
         HLayoutManager groupManager = new HLayoutManager(context);
         Object[] results = groupManager.layout(layout, dimens != null ? dimens : new PercentDimens().scaleTo(scaleWidth, scaleHeight), mBodyInterceptor,  new ScriptInterceptor());
@@ -248,14 +261,16 @@ public class Oxpecker {
             }
 //            mLayout.setJsChannel(mSilentlyJsChannel);
         }
-        return hView=mLayout;
+        InvocationHandler handler = new DynamicProxy(mLayout);
+        hView = (ViewPart<? extends View>) Proxy.newProxyInstance(handler.getClass().getClassLoader(), new Class[]{ViewPart.class}, handler);
+        return hView;
     }
 
     /**
      * 获取View
      * @return
      */
-    public HView<? extends View> getView() {
+    public ViewPart<? extends View> getView() {
         return hView;
     }
 
@@ -282,7 +297,7 @@ public class Oxpecker {
      */
     public void finishPecking() {
         if(hView != null) {
-            hView.destroy();
+            hView.onRecycle();
             hView = null;
         }
         mSilentlyJsChannel = null;
@@ -295,7 +310,7 @@ public class Oxpecker {
      * @return
      * @throws IOException
      */
-    public HView<? extends View> parse(InputStream inputStream) throws IOException {
+    public ViewPart<? extends View> parse(InputStream inputStream) throws IOException {
         String template = hTemplate.apply(inputStream);
         return inflater(template);
     }
@@ -306,7 +321,7 @@ public class Oxpecker {
      * @return
      * @throws IOException
      */
-    public HView<? extends View> parse(String source) throws IOException {
+    public ViewPart<? extends View> parse(String source) throws IOException {
         String template = hTemplate.apply(source);
         return inflater(template);
     }
@@ -317,7 +332,7 @@ public class Oxpecker {
      * @return
      * @throws IOException
      */
-    public HView<? extends View> parse(File file) throws IOException{
+    public ViewPart<? extends View> parse(File file) throws IOException{
         try {
             String template = hTemplate.apply(new FileInputStream(file));
             return inflater(template);
@@ -328,20 +343,5 @@ public class Oxpecker {
 
     public HTemplate getTemplate() {
         return hTemplate;
-    }
-
-    /**
-     *
-     * 设置回调
-     * @param onPackListener
-     */
-    public void setOnPackListener(OnPackListener onPackListener) {
-        this.onPackListener = onPackListener;
-    }
-
-    void checkLayoutInflaterListenerSetted() {
-        if(onPackListener == null) {
-            throw new HLayoutException("not exec setOnLayoutInflaterListener method");
-        }
     }
 }

@@ -19,6 +19,7 @@
     }
 
     head: {
+        /*
         script:
             '''
             __package.require("android.content.Intent").as("Intent");
@@ -31,6 +32,10 @@
             }
 
             '''
+        */
+        script: {
+            src: "{{assets}}/js/hello_world.js"
+        }
     }
 
     body: {

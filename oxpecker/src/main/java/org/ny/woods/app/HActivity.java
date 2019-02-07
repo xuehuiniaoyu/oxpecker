@@ -4,6 +4,7 @@ import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 
@@ -11,11 +12,13 @@ import org.ny.woods.parser.Oxpecker;
 import org.ny.woods.template.HTemplate;
 import org.ny.woods.template.SimpleHTemplate;
 import org.ny.woods.utils.FixMemLeak4Hw;
+import org.ny.woods.utils.GetTask;
 import org.ny.woods.utils.IDUtil;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 public class HActivity extends Activity {
     private Oxpecker oxpecker;
@@ -81,6 +84,38 @@ public class HActivity extends Activity {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * 从流加载布局
+     * @param inputStream
+     */
+    public void setContentViewFromStream(InputStream inputStream) {
+        try {
+            setContentView(oxpecker.parse(inputStream).getView());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     *
+     * 从Uri加载布局
+     * @param uri
+     */
+    public void setContentViewFromUri(String uri) {
+        GetTask getTask = new GetTask(this, uri);
+        getTask.setOnResourceLoadListener(new GetTask.OnResourceLoadListener() {
+            @Override
+            public void onLoadFail(String uri, Exception e) {
+
+            }
+
+            @Override
+            public void onLoadSucc(String uri, String resource) {
+                setContentView(resource);
+            }
+        }).load();
     }
 
     /**

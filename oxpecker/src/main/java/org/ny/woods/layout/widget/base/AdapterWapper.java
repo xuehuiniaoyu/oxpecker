@@ -222,4 +222,12 @@ public class AdapterWapper<T extends AbsListView> extends HView<T> {
     public void setDrawSelectorOnTop(JsonValue value) {
         mView.setDrawSelectorOnTop(value.asBoolean());
     }
+
+    @Override
+    public void onRecycle() {
+        super.onRecycle();
+        if(mView.getAdapter() instanceof JsonArrayAdapter) {
+            ((JsonArrayAdapter) mView.getAdapter()).onRecycle();
+        }
+    }
 }

@@ -3,20 +3,21 @@ package org.ny.woods.layout.adapter;
 import android.os.Build;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 
 import org.hjson.JsonArray;
 import org.hjson.JsonObject;
-import org.hjson.JsonValue;
 import org.ny.woods.dimens.HDimens;
 import org.ny.woods.exception.HLayoutException;
 import org.ny.woods.layout.widget.HView;
+import org.ny.woods.layout.widget.base.AdapterWapper;
+import org.ny.woods.layout.widget.i.ViewPart;
 import org.ny.woods.parser.Oxpecker;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.Iterator;
 
 /**
  *
@@ -34,7 +35,9 @@ public class JsonArrayAdapter extends BaseAdapter {
 
     private Oxpecker oxpecker;
 
-    HashMap<View, HView<?>> mHViewCache = new HashMap<>();
+    HashMap<View, ViewPart<?>> mHViewCache = new HashMap<>();
+
+    private AdapterWapper<? extends AbsListView> mAdapterWapper;
 
     /**
      *
@@ -43,8 +46,8 @@ public class JsonArrayAdapter extends BaseAdapter {
      */
     private JsonArray array;
 
-    public JsonArrayAdapter(HView<? extends View> hView) {
-        onToolsClone(hView);
+    public JsonArrayAdapter(AdapterWapper<? extends AbsListView> adapterWapper) {
+        onToolsClone(mAdapterWapper=adapterWapper);
     }
 
     protected void onToolsClone(HView<? extends View> hView) {
@@ -109,7 +112,7 @@ public class JsonArrayAdapter extends BaseAdapter {
      */
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        HView<? extends View> hView;
+        ViewPart<? extends View> hView;
         if (convertView == null) {
             try {
                 hView = oxpecker.parse(layoutString);
@@ -134,25 +137,11 @@ public class JsonArrayAdapter extends BaseAdapter {
 //            }
 //            return (View) js.exFunction(getViewJsFunctionName, JsonArrayAdapter.this, position, convertView, convertView.getTag());
 //        }
-
-        JsonObject item = getItem(position);
-        Iterator<JsonObject.Member> iterator = item.iterator();
-        HashMap<String, Object> applyData = new HashMap<>();
-        while (iterator.hasNext()) {
-            JsonObject.Member member = iterator.next();
-            JsonValue value = member.getValue();
-            if(value.isString()) {
-                applyData.put(member.getName(), value.asString());
-            }
-            else if(value.isNumber()) {
-                applyData.put(member.getName(), value.asDouble());
-            }
-            else {
-                applyData.put(member.getName(), value);
-            }
-        }
-
-        mHViewCache.get(convertView).onAdapterGetView(applyData);
+        mHViewCache.get(convertView).onAdapterGetView(position, getItem(position));
         return convertView;
+    }
+
+    public void onRecycle() {
+        mAdapterWapper = null;
     }
 }

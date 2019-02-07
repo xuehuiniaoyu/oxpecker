@@ -1,6 +1,7 @@
 package org.ny.woods.layout.tools;
 
 import org.hjson.JsonValue;
+import org.ny.woods.exception.HException;
 import org.ny.woods.js.channel.JsChannel;
 import org.ny.woods.utils.Reflect;
 
@@ -48,6 +49,9 @@ public class FunctionExec {
 
     public Object exec(Object javaChannel, JsChannel jsChannel, Reflect reflect) {
         if("javascript".equals(language)) {
+            if(jsChannel == null) {
+                throw new HException("Before you perform the \"oxpecker.startPacking()\" method?");
+            }
             return jsChannel.exFunction(name, getArgumentsValue());
         }
         else {

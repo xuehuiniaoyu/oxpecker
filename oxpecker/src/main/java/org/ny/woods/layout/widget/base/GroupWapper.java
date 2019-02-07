@@ -4,12 +4,11 @@ import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.hjson.JsonObject;
 import org.hjson.JsonValue;
 import org.ny.woods.js.channel.JsChannel;
 import org.ny.woods.layout.widget.HView;
 import org.ny.woods.parser.Oxpecker;
-
-import java.util.HashMap;
 
 public class GroupWapper<T extends ViewGroup> extends HView<T> {
     public GroupWapper(Context context, JsonValue value) {
@@ -64,13 +63,13 @@ public class GroupWapper<T extends ViewGroup> extends HView<T> {
     }
 
     @Override
-    public void onAdapterGetView(HashMap<String, Object> map) {
-        super.onAdapterGetView(map);
+    public void onAdapterGetView(int position, JsonObject positionData) {
+        super.onAdapterGetView(position, positionData);
         if(getChildren() != null) {
             int len = getChildren().size();
             for(int i = 0; i < len; i++) {
                 HView<? extends View> layoutHNode = (HView<? extends View>) getChildAt(i);
-                layoutHNode.onAdapterGetView(map);
+                layoutHNode.onAdapterGetView(position, positionData);
             }
         }
     }

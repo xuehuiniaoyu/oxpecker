@@ -9,6 +9,7 @@ import android.util.TypedValue;
 import android.view.Gravity;
 import android.widget.TextView;
 
+import org.hjson.JsonObject;
 import org.hjson.JsonValue;
 import org.ny.woods.dimens.HDimens;
 import org.ny.woods.exception.HException;
@@ -20,10 +21,11 @@ import org.ny.woods.template.HTemplate;
 import org.ny.woods.utils.HAsyncTask;
 
 import java.io.IOException;
-import java.util.HashMap;
+import java.util.Iterator;
 
 public class TextWapper<T extends TextView> extends HView<T> {
     private HTemplate hTemplate;
+
     public TextWapper(Context context, JsonValue value) {
         super(context, value);
         mView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
@@ -38,10 +40,11 @@ public class TextWapper<T extends TextView> extends HView<T> {
 
     private JsonValue textTemplate;
     private HAsyncTask<String, CharSequence> mTextAsyncTask;
+
     // 设置内容
     public void setText(JsonValue value) {
         String text = value.asString();
-        if(textTemplate == null) {
+        if (textTemplate == null) {
             textTemplate = value;
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.CUPCAKE) {
@@ -126,7 +129,7 @@ public class TextWapper<T extends TextView> extends HView<T> {
     public void setTextAlign(JsonValue value) {
         String valueString = value.asString();
         int gravity = 0;
-        for(String str : valueString.split("\\|")) {
+        for (String str : valueString.split("\\|")) {
             switch (str) {
                 case "left":
                     gravity |= Gravity.LEFT;
@@ -197,6 +200,7 @@ public class TextWapper<T extends TextView> extends HView<T> {
 
     /**
      * 文本改变监听
+     *
      * @param value
      */
     public void setOnTextChange(JsonValue value) {
@@ -225,17 +229,21 @@ public class TextWapper<T extends TextView> extends HView<T> {
     }
 
     @Override
-    public void onAdapterGetView(HashMap<String, Object> map) {
+    public void onAdapterGetView(int position, JsonObject positionData) {
         if (textTemplate != null) {
-            hTemplate.asAll(map);
+            Iterator<JsonObject.Member> iterator = positionData.iterator();
+            while (iterator.hasNext()) {
+                JsonObject.Member member = iterator.next();
+                hTemplate.as(member.getName(), member.getValue().asString());
+            }
             setText(textTemplate);
         }
     }
 
     @Override
-    public void destroy() {
-        super.destroy();
-        if(mTextAsyncTask != null) {
+    public void onRecycle() {
+        super.onRecycle();
+        if (mTextAsyncTask != null) {
             mTextAsyncTask.cancel();
             mTextAsyncTask = null;
         }

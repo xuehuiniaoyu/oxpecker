@@ -118,12 +118,12 @@ public class HNode {
     }
 
     /**
-     * 销毁
+     * 销毁、回收
      */
-    public void destroy() {
+    public void onRecycle() {
         if(children != null) {
             for(HNode hNode : children) {
-                hNode.destroy();
+                hNode.onRecycle();
             }
         }
         if(parent != null) {

@@ -22,6 +22,7 @@ import com.bumptech.glide.request.target.CustomViewTarget;
 import com.bumptech.glide.request.transition.Transition;
 
 import org.hjson.JsonArray;
+import org.hjson.JsonObject;
 import org.hjson.JsonValue;
 import org.ny.woods.annotations.Extension;
 import org.ny.woods.dimens.HDimens;
@@ -31,6 +32,7 @@ import org.ny.woods.js.channel.JsChannel;
 import org.ny.woods.layout.HNode;
 import org.ny.woods.layout.tools.FunctionExec;
 import org.ny.woods.layout.tools.UiFuncExec;
+import org.ny.woods.layout.widget.i.ViewPart;
 import org.ny.woods.parser.Oxpecker;
 import org.ny.woods.utils.HUri;
 import org.ny.woods.utils.IDUtil;
@@ -39,13 +41,12 @@ import org.ny.woods.utils.Reflect;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import glide.GlideApp;
 import glide.GlideRequest;
 
-public class HView<T extends View> extends HNode {
+public class HView<T extends View> extends HNode implements ViewPart {
 
     /**
      * Android Native View
@@ -76,6 +77,11 @@ public class HView<T extends View> extends HNode {
      * 布局解析器
      */
     private Oxpecker oxpecker;
+
+    /**
+     * 是否绘制完成
+     */
+    private boolean uiReaded;
 
 
     /**
@@ -112,10 +118,12 @@ public class HView<T extends View> extends HNode {
      *
      * @param jsChannel
      */
+    @Override
     public void setJsChannel(JsChannel jsChannel) {
         this.jsChannel = jsChannel;
     }
 
+    @Override
     public JsChannel getJsChannel() {
         return jsChannel;
     }
@@ -133,6 +141,7 @@ public class HView<T extends View> extends HNode {
         return oxpecker;
     }
 
+    @Override
     public Context getContext() {
         return context;
     }
@@ -145,6 +154,7 @@ public class HView<T extends View> extends HNode {
         return dimens;
     }
 
+    @Override
     public T getView() {
         return mView;
     }
@@ -823,9 +833,29 @@ public class HView<T extends View> extends HNode {
         for (UiFuncExec uiFuncExec : mAfterReadyUiFuncExecList) {
             uiFuncExec.exec();
         }
+        uiReaded = true;
     }
 
-    public void onAdapterGetView(HashMap<String, Object> map) {
+    /**
+     * 绘制完毕
+     * @return
+     */
+    public boolean isOnReady() {
+        return uiReaded;
+    }
 
+    /**
+     *
+     * 当View在AdapterWapper中使用是会被执行该方法
+     *
+     * @param position 调用getView方法传入的position
+     * @param positionData position对应的数据
+     */
+    public void onAdapterGetView(int position, JsonObject positionData) {
+    }
+
+    @Override
+    public void onRecycle() {
+        super.onRecycle();
     }
 }
