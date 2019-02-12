@@ -2,12 +2,19 @@ package org.ny.woods.template;
 
 import com.github.jknack.handlebars.Handlebars;
 
+import org.ny.woods.exception.HException;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class HTemplate {
+    /**
+     * 不可被更改的关键字
+     */
+    private final ArrayList<String> finalKeys = new ArrayList<>();
     private HashMap<String, Object> dataCaches = new HashMap<String, Object>() {
         @Override
         public Object get(Object key) {
@@ -27,6 +34,7 @@ public class HTemplate {
 
     public HTemplate(HTemplate hTemplate) {
         this.dataCaches.putAll(hTemplate.dataCaches);
+        this.finalKeys.addAll(hTemplate.finalKeys);
     }
 
     /**
@@ -36,7 +44,24 @@ public class HTemplate {
      * @return
      */
     public HTemplate as(String key, Object value) {
+        if(finalKeys.contains(key)) {
+            throw new HException("The keyword \""+key+"\" can not be replaced!");
+        }
         dataCaches.put(key, value);
+        return this;
+    }
+
+    /**
+     * 为对象取个别名,添加后不可更改
+     * @param key 别名
+     * @param value 实际对象
+     * @return
+     */
+    public HTemplate asFinal(String key, Object value) {
+        as(key, value);
+        if(!finalKeys.contains(key)) {
+            finalKeys.add(key);
+        }
         return this;
     }
 
@@ -49,13 +74,28 @@ public class HTemplate {
     }
 
     /**
+     * 复制
+     * @param hTemplate
+     */
+    public void asAll(HTemplate hTemplate) {
+        dataCaches.putAll(hTemplate.dataCaches);
+    }
+
+    /**
      * 删除别名
      * @param key
      * @return
      */
     public HTemplate remove(String key) {
+        if(finalKeys.contains(key)) {
+            throw new HException("The keyword \""+key+"\" cannot be deleted!");
+        }
         dataCaches.remove(key);
         return this;
+    }
+
+    public <T> T get(String key) {
+        return (T) dataCaches.get(key);
     }
 
     public HTemplate clear() {

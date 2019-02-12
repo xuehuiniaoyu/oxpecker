@@ -1,18 +1,23 @@
 {
     body: {
-	backgroundColor: "#654321"
-	{{relative-layout}}: {
-	    height:80%
-	    {{text-view}}: {
-            width: "50"
-            height: "50"
-            id: "txt"
-            centerInParent: true
-            backgroundColor: "#90334400"
-            textColor:"#000000"
-            textAlign: center
-            text: "{{hello}} {{world }}"
-	    }
-	}
+        backgroundColor: "#654321"
+        {{relative-layout}}: {
+            height:80%
+            {{relative-layout}}: {
+                height: 50%
+                background: "#8000ffee"
+                centerInParent: true
+                {{text-view}}: {
+                    width: "50"
+                    height: "50"
+                    id: "txt"
+                    centerInParent: true
+                    backgroundColor: "#90334400"
+                    textColor:"#ffffff"
+                    textAlign: center
+                    text: "{{hello}} {{world }}"
+                }
+            }
+        }
     }
 }

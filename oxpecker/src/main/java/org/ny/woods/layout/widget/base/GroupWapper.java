@@ -9,6 +9,7 @@ import org.hjson.JsonValue;
 import org.ny.woods.js.channel.JsChannel;
 import org.ny.woods.layout.widget.HView;
 import org.ny.woods.parser.Oxpecker;
+import org.ny.woods.template.HTemplate;
 
 public class GroupWapper<T extends ViewGroup> extends HView<T> {
     public GroupWapper(Context context, JsonValue value) {
@@ -21,7 +22,7 @@ public class GroupWapper<T extends ViewGroup> extends HView<T> {
             int len = getChildren().size();
             for(int i = 0; i < len; i++) {
                 HView<? extends View> layoutHNode = (HView<? extends View>) getChildAt(i);
-                layoutHNode.onMeasure(mViewLp.width > 0 ? mViewLp.width : parentWidth, mViewLp.height > 0 ? mViewLp.height : parentHeight);
+                layoutHNode.onMeasure(mViewLp.width > 0 ? mViewLp.width : getDimens().getParentWidth(), mViewLp.height > 0 ? mViewLp.height : getDimens().getParentHeight());
             }
         }
     }
@@ -63,13 +64,13 @@ public class GroupWapper<T extends ViewGroup> extends HView<T> {
     }
 
     @Override
-    public void onAdapterGetView(int position, JsonObject positionData) {
-        super.onAdapterGetView(position, positionData);
+    public void onAdapterGetView(int position, JsonObject positionData, HTemplate privateHTemplate) {
+        super.onAdapterGetView(position, positionData, privateHTemplate);
         if(getChildren() != null) {
             int len = getChildren().size();
             for(int i = 0; i < len; i++) {
                 HView<? extends View> layoutHNode = (HView<? extends View>) getChildAt(i);
-                layoutHNode.onAdapterGetView(position, positionData);
+                layoutHNode.onAdapterGetView(position, positionData, privateHTemplate);
             }
         }
     }

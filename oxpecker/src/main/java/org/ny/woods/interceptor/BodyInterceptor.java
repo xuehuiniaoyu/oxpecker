@@ -98,6 +98,7 @@ public class BodyInterceptor implements HInterceptor<HView<? extends View>> {
         }
         JsonObject body = jsonObject.get("body").asObject();
         HRelativeLayout bodyLayout = new HRelativeLayout(context, body);
+        bodyLayout.dimens(dimens);
         final HView<? extends View> layoutHNode = recursionChildren(bodyLayout);
         layoutHNode.getView().post(new Runnable() {
             @Override
@@ -110,7 +111,6 @@ public class BodyInterceptor implements HInterceptor<HView<? extends View>> {
 
     Reflect reflect = new Reflect();
     HView<? extends View> recursionChildren(HView<? extends View> parent) {
-        parent.dimens(dimens);
         JsonValue jsonValue = parent.getValue();
         Iterator<JsonObject.Member> iterator = jsonValue.asObject().iterator();
         while (iterator.hasNext()) {
@@ -121,7 +121,7 @@ public class BodyInterceptor implements HInterceptor<HView<? extends View>> {
                             .on(getTagName(member.getName()), context.getClassLoader())
                             .constructor(Context.class, JsonValue.class)
                             .newInstance(context, member.getValue());
-                    node.dimens(dimens.newHDimens());
+                    node.dimens(parent.getDimens().newHDimens());
                     staticInit(member.getName(), node);
                     HView<? extends View> child = recursionChildren(node);
                     if (child != null) {

@@ -3,9 +3,12 @@ package org.ny.woods.app;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.View;
 
 import org.ny.woods.parser.Oxpecker;
@@ -22,18 +25,17 @@ import java.io.InputStream;
 
 public class HActivity extends Activity {
     private Oxpecker oxpecker;
-    private HTemplate hTemplate;
+    private SimpleHTemplate hTemplate = new SimpleHTemplate();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        hTemplate = new SimpleHTemplate();
-        oxpecker = new Oxpecker(this, hTemplate);
+        hTemplate.asFinal(this);
     }
 
     @Override
     public void setContentView(View view) {
         super.setContentView(view);
-        oxpecker.startPecking();
+        getOxpecker().startPecking();
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB) {
             ObjectAnimator fadeAnim = ObjectAnimator.ofFloat( view, "alpha", 0.0F, 1.0F );
             fadeAnim.setDuration( 600 );
@@ -58,7 +60,7 @@ public class HActivity extends Activity {
      */
     public void setContentViewFromAssets(String templateName) {
         try {
-            setContentView(oxpecker.parse(getAssets().open(templateName)).getView());
+            setContentView(getOxpecker().parse(getAssets().open(templateName)).getView());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -80,7 +82,7 @@ public class HActivity extends Activity {
      */
     public void setContentViewFromFile(File file) {
         try {
-            setContentView(oxpecker.parse(new FileInputStream(file)).getView());
+            setContentView(getOxpecker().parse(new FileInputStream(file)).getView());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -92,7 +94,7 @@ public class HActivity extends Activity {
      */
     public void setContentViewFromStream(InputStream inputStream) {
         try {
-            setContentView(oxpecker.parse(inputStream).getView());
+            setContentView(getOxpecker().parse(inputStream).getView());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -124,7 +126,7 @@ public class HActivity extends Activity {
      */
     public void setContentViewFromRaw(int template) {
         try {
-            setContentView(oxpecker.parse(getResources().openRawResource(template)).getView());
+            setContentView(getOxpecker().parse(getResources().openRawResource(template)).getView());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -136,7 +138,7 @@ public class HActivity extends Activity {
      */
     public void setContentView(String template) {
         try {
-            setContentView(oxpecker.parse(template).getView());
+            setContentView(getOxpecker().parse(template).getView());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -151,6 +153,9 @@ public class HActivity extends Activity {
     }
 
     public Oxpecker getOxpecker() {
+        if(oxpecker == null) {
+            oxpecker = new Oxpecker(this, hTemplate);
+        }
         return oxpecker;
     }
 
@@ -168,7 +173,9 @@ public class HActivity extends Activity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        oxpecker.finishPecking();
+        if(oxpecker != null) {
+            oxpecker.finishPecking();
+        }
         FixMemLeak4Hw.fixLeak(this);
     }
 }

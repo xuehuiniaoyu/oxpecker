@@ -23,7 +23,7 @@ public class HelloWorldActivity extends HActivity {
         Oxpecker oxpecker = new Oxpecker(this);
         oxpecker.setTemplate(new SimpleHTemplate());
         try {
-            oxpecker.inflaterAsync(new Oxpecker.AsyncTytpe(getAssets().open("hello_world.hj"), Oxpecker.AsyncTytpe.STREAM), new Oxpecker.OnPackListener() {
+            oxpecker.inflaterAsync(new Oxpecker.AsyncTytpe(getAssets().open("hello_world.hj"), Oxpecker.AsyncTytpe.STREAM), new Oxpecker.AsyncTytpe.Callback() {
                 @Override
                 public void onFailed(Exception e, Oxpecker oxpecker) {
 

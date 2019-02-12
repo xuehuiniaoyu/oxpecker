@@ -1,0 +1,116 @@
+{
+    define: {
+        ProgressBar: xuehuiniaoyu.github.oxpecker.view.MyProgressBar
+    }
+    head: {
+        script:
+        '''
+            __package.require("xuehuiniaoyu.github.oxpecker.activity.ImgShowActivity").as("ImgShowActivity");
+            __package.require("java.lang.String").as("String");
+            __package.require("android.content.Intent").as("Intent");
+            __package.require("android.content.Context").as("Context");
+            __package.require("java.lang.Class").as("Class");
+            __reflect.from(__package);
+
+            var listView = __context.findViewById("#listView");
+            function show(parent, view, position, id) {
+                var downloadQueue = __context.getHTemplate().get("downloadQueue");
+                var downloadInfo = downloadQueue.get(position); // 由于Rhino会自动转换int类型为double，所以downloadQueue对象必须重写get方法
+                var src = downloadInfo.getSrc();
+
+                var intent = __reflect.on("Intent").c_("Context", "Class").new_(__context, __reflect.loadClass("ImgShowActivity"));
+                intent.putExtra("src", src);
+                __context.startActivity(intent);
+            }
+        '''
+    }
+    body: {
+        {{list-view}}: {
+            id: listView
+            onItemClick: "javascript: show"
+            data:{{{adapter-data}}}
+            view: {
+                body: {
+                    {{relative-layout}}: {
+                        {{relative-layout}}: {
+                            height: 50
+                            background: "#c0c0c0"
+
+                            {{text-view}}: {
+                                id: name
+                                width: auto
+                                height: auto
+                                text: "你好"
+                                textColor: "#000000"
+                                textSize: "20sp"
+                            }
+
+                            ProgressBar: {
+
+                                ### 绑定数据
+                                bound: {
+                                    list: "downloadQueue"
+                                    item: "item"
+                                    var: {
+                                        progress: "item.progress"
+                                        max: "item.max"
+                                    }
+                                }
+
+                                id: progressBar
+                                below: "#name"
+                                height: 5
+                                progress: "{{progress}}"
+                                max: "{{max}}"
+                                clickable: false
+                            }
+
+                            {{relative-layout}}: {
+                                id: layout1
+                                width: 30
+                                height: 30
+                                background: "#cc0000"
+                                below: "#progressBar"
+                                margin: [10, 1, 0, 0]
+
+                                {{relative-layout}}: {
+                                    width: fill
+                                    height: 80
+                                    background: "#000000"
+
+                                    {{text-view}}: {
+                                        width: 50
+                                        height: fill
+                                        background: "#666666"
+                                        text: "hahaha"
+                                    }
+                                }
+                            }
+
+                            {{relative-layout}}: {
+                                width: 30
+                                height: 30
+                                background: "#cc0000"
+                                below: "#layout1"
+                                margin: [10, 1, 0, 0]
+
+                                {{relative-layout}}: {
+                                    width: fill
+                                    height: 80
+                                    background: "#000000"
+
+                                    {{text-view}}: {
+                                        width: 50
+                                        height: fill
+                                        background: "#666666"
+                                        text: "hahaha"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -229,7 +229,7 @@ public class TextWapper<T extends TextView> extends HView<T> {
     }
 
     @Override
-    public void onAdapterGetView(int position, JsonObject positionData) {
+    public void onAdapterGetView(int position, JsonObject positionData, HTemplate privateHTemplate) {
         if (textTemplate != null) {
             Iterator<JsonObject.Member> iterator = positionData.iterator();
             while (iterator.hasNext()) {

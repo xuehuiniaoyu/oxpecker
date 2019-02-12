@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Environment;
 import android.view.View;
 
@@ -35,13 +36,19 @@ import java.lang.reflect.Proxy;
 import java.util.HashMap;
 
 public class Oxpecker {
-
-    public interface OnPackListener {
-        void onFailed(Exception e, Oxpecker oxpecker);
-        void onSuccess(ViewPart<? extends View> hView, Oxpecker oxpecker);
-    }
-
     public static final class AsyncTytpe {
+
+        /**
+         * 回调接口
+         *
+         *
+         *
+         */
+        public interface Callback {
+            void onFailed(Exception e, Oxpecker oxpecker);
+            void onSuccess(ViewPart<? extends View> hView, Oxpecker oxpecker);
+        }
+
         public static final int FILE = 0;
         public static final int STRING = 1;
         public static final int STREAM = 2;
@@ -52,7 +59,7 @@ public class Oxpecker {
         ViewPart<? extends View> hView;
         String layout;
         Exception err;
-        OnPackListener onPackListener;
+        Callback callback;
 
         public AsyncTytpe(Object obj, int type) {
             this.obj = obj;
@@ -63,10 +70,10 @@ public class Oxpecker {
     /**
      * 异步加载View
      * @param asyncTytpe
-     * @param onPackListener
+     * @param callback
      */
-    public void inflaterAsync(AsyncTytpe asyncTytpe, OnPackListener onPackListener) {
-        asyncTytpe.onPackListener = onPackListener;
+    public void inflaterAsync(AsyncTytpe asyncTytpe, AsyncTytpe.Callback callback) {
+        asyncTytpe.callback = callback;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.CUPCAKE) {
             final AsyncTask<AsyncTytpe, Void, AsyncTytpe> asyncTask
                     = new AsyncTask<AsyncTytpe, Void, AsyncTytpe>() {
@@ -106,10 +113,10 @@ public class Oxpecker {
                 @Override
                 protected void onPostExecute(AsyncTytpe inflaterType) {
                     if(inflaterType.err != null) {
-                        inflaterType.onPackListener.onFailed(inflaterType.err, Oxpecker.this);
+                        inflaterType.callback.onFailed(inflaterType.err, Oxpecker.this);
                     }
                     else {
-                        inflaterType.onPackListener.onSuccess(inflaterType.hView, Oxpecker.this);
+                        inflaterType.callback.onSuccess(inflaterType.hView, Oxpecker.this);
                     }
                 }
             };
@@ -155,26 +162,8 @@ public class Oxpecker {
     private ViewPart<? extends View> hView;
     private SilentlyJsChannel mSilentlyJsChannel;
 
-    public Oxpecker(Oxpecker oxpecker) {
-        this.context = oxpecker.context;
-        setTemplate(oxpecker.hTemplate);
-        this.hTemplate.as("context", context);
-        this.scaleWidth = oxpecker.scaleWidth;
-        this.scaleHeight = oxpecker.scaleHeight;
-        this.mJavaScriptInterface.putAll(oxpecker.mJavaScriptInterface);
-        this.mBodyInterceptor = oxpecker.mBodyInterceptor;
-    }
-
     public Oxpecker setTemplate(HTemplate hTemplate) {
         this.hTemplate = new HTemplate(hTemplate);
-        this.hTemplate.as("package", context.getPackageName());
-        this.hTemplate.as("assets", "file:///android_asset");
-        this.hTemplate.as("raw", "android.resource://"+context.getPackageName()+"/raw");
-        this.hTemplate.as("drawable", "android.resource://"+context.getPackageName()+"/drawable");
-        this.hTemplate.as("sdcard", "file://"+Environment.getExternalStorageDirectory().getPath());
-        this.hTemplate.as("file", Uri.fromFile(context.getFilesDir()).getPath());
-        this.hTemplate.as("cache", Uri.fromFile(context.getCacheDir()).getPath());
-        this.hTemplate.as("/", Uri.fromFile(context.getFilesDir().getParentFile()).getPath());
         return this;
     }
 
@@ -201,6 +190,15 @@ public class Oxpecker {
      */
     private HashMap<String, Object> mJavaScriptInterface = new HashMap<>();
 
+    public Oxpecker(Oxpecker oxpecker) {
+        this.context = oxpecker.context;
+        setTemplate(oxpecker.hTemplate);
+        this.scaleWidth = oxpecker.scaleWidth;
+        this.scaleHeight = oxpecker.scaleHeight;
+        this.mJavaScriptInterface.putAll(oxpecker.mJavaScriptInterface);
+        this.mBodyInterceptor = oxpecker.mBodyInterceptor;
+    }
+
     public Oxpecker(Context context) {
         this(context, new SimpleHTemplate(), 100, 100);
     }
@@ -216,7 +214,6 @@ public class Oxpecker {
     public Oxpecker(Context context, HTemplate hTemplate, int scaleWidth, int scaleHeight) {
         this.context = context;
         setTemplate(hTemplate);
-        this.hTemplate.as("context", context);
         this.scaleWidth = scaleWidth;
         this.scaleHeight = scaleHeight;
     }

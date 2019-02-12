@@ -21,6 +21,8 @@
         </activity>
         <activity android:name=".activity.CustomActivity" />
         <activity android:name=".activity.HelloWorldActivity" />
+        <activity android:name=".activity.TestDownloadActivity" />
+        <activity android:name=".activity.ImgShowActivity" />
     </application>
 
 </manifest>

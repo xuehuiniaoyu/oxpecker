@@ -5,6 +5,7 @@ import android.view.View;
 
 import org.hjson.JsonObject;
 import org.ny.woods.js.channel.JsChannel;
+import org.ny.woods.template.HTemplate;
 
 /**
  * 可用于给用户返回
@@ -16,8 +17,9 @@ public interface ViewPart<T extends View> {
      * 当View在ListView或GridView中使用会被执行
      * @param position
      * @param positionData
+     * @param privateHTemplate
      */
-    void onAdapterGetView(int position, JsonObject positionData);
+    void onAdapterGetView(int position, JsonObject positionData, HTemplate privateHTemplate);
 
     T getView();
     void onRecycle();

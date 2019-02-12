@@ -87,7 +87,7 @@ public abstract class HDimens {
 
     public HDimens(HDimens dimens) {
         this.displayMetrics = dimens.displayMetrics;
-        scaleTo(dimens.width, dimens.height).ok();
+        set(dimens.getParentWidth(), dimens.getParentHeight()).scaleTo(dimens.width, dimens.height).ok();
     }
 
     public abstract HDimens newHDimens();
@@ -212,6 +212,10 @@ public abstract class HDimens {
 
     public void setLocked(boolean locked) {
         this.locked = locked;
+    }
+
+    public boolean isLocked() {
+        return locked;
     }
 
     //    /**

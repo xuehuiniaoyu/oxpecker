@@ -1,0 +1,7 @@
+{
+    body: {
+        {{img-view}}: {
+            src: "{{data}}/download/{{img-name}}"
+        }
+    }
+}

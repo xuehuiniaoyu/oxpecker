@@ -15,6 +15,7 @@ import org.ny.woods.layout.widget.HView;
 import org.ny.woods.layout.widget.base.AdapterWapper;
 import org.ny.woods.layout.widget.i.ViewPart;
 import org.ny.woods.parser.Oxpecker;
+import org.ny.woods.template.HTemplate;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -37,7 +38,8 @@ public class JsonArrayAdapter extends BaseAdapter {
 
     HashMap<View, ViewPart<?>> mHViewCache = new HashMap<>();
 
-    private AdapterWapper<? extends AbsListView> mAdapterWapper;
+    private HTemplate privateHTemplate;
+    private AdapterWapper<? extends AbsListView> adapterWapper;
 
     /**
      *
@@ -47,7 +49,8 @@ public class JsonArrayAdapter extends BaseAdapter {
     private JsonArray array;
 
     public JsonArrayAdapter(AdapterWapper<? extends AbsListView> adapterWapper) {
-        onToolsClone(mAdapterWapper=adapterWapper);
+        onToolsClone(this.adapterWapper = adapterWapper);
+        privateHTemplate = new HTemplate();
     }
 
     protected void onToolsClone(HView<? extends View> hView) {
@@ -58,7 +61,7 @@ public class JsonArrayAdapter extends BaseAdapter {
             }
         }
         HDimens hDimens = hView.getDimens().newHDimens();
-        hDimens.set(hView.getView().getWidth()/columns, hView.getView().getHeight());
+        hDimens.set(this.adapterWapper.getView().getWidth()/columns, this.adapterWapper.getView().getHeight());
         hDimens.setLocked(true);
         setOxpecker(new Oxpecker(hView.getOxpecker()).setDimens(hDimens));
     }
@@ -137,11 +140,11 @@ public class JsonArrayAdapter extends BaseAdapter {
 //            }
 //            return (View) js.exFunction(getViewJsFunctionName, JsonArrayAdapter.this, position, convertView, convertView.getTag());
 //        }
-        mHViewCache.get(convertView).onAdapterGetView(position, getItem(position));
+        mHViewCache.get(convertView).onAdapterGetView(position, getItem(position), privateHTemplate);
         return convertView;
     }
 
     public void onRecycle() {
-        mAdapterWapper = null;
+        this.adapterWapper = null;
     }
 }

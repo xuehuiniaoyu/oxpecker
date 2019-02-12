@@ -9,7 +9,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.AttributeSet;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -34,10 +33,13 @@ import org.ny.woods.layout.tools.FunctionExec;
 import org.ny.woods.layout.tools.UiFuncExec;
 import org.ny.woods.layout.widget.i.ViewPart;
 import org.ny.woods.parser.Oxpecker;
+import org.ny.woods.template.HTemplate;
 import org.ny.woods.utils.HUri;
 import org.ny.woods.utils.IDUtil;
 import org.ny.woods.utils.Reflect;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -174,6 +176,48 @@ public class HView<T extends View> extends HNode implements ViewPart {
         public int heightWeight;
     }
 
+    T onGetView(String mViewTypeClassName) {
+        try {
+            Class<?> mViewClass = context.getClassLoader().loadClass(mViewTypeClassName);
+            Constructor<?>[] constructors = mViewClass.getConstructors();
+            Constructor<?> constructor = null;
+            for(int i = 0; i < constructors.length; i++) {
+                if(constructor == null) {
+                    constructor = constructors[i];
+                }
+                else if(constructors[i].getParameterTypes().length < constructor.getParameterTypes().length) {
+                    constructor = constructors[i];
+                }
+            }
+            if(constructor == null) {
+                throw new HException("No constructor!");
+            }
+            switch (constructor.getParameterTypes().length) {
+                case 1: {
+                    return (T) constructor.newInstance(context);
+                }
+                case 2: {
+                    return (T) constructor.newInstance(context, null);
+                }
+                case 3: {
+                    return (T) constructor.newInstance(context, null, 0);
+                }
+                case 4: {
+                    return (T) constructor.newInstance(context, null, 0, 0);
+                }
+            }
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     @SuppressLint("NewApi")
     public HView(Context context, JsonValue value) {
         super(value);
@@ -188,7 +232,7 @@ public class HView<T extends View> extends HNode implements ViewPart {
                 } catch (Throwable t) {
                 }
                 String mViewTypeClassName = reflect.clear().on(types[0]).get("name");
-                mView = reflect.on(mViewTypeClassName, context.getClassLoader()).constructor(Context.class, AttributeSet.class).newInstance(context, null);
+                mView = onGetView(mViewTypeClassName);
             } else {
                 throw new HLayoutException("Do not specify the correct generic types to <T extends View>");
             }
@@ -810,6 +854,11 @@ public class HView<T extends View> extends HNode implements ViewPart {
         for (UiFuncExec uiFuncExec : mUiFuncExecList) {
             uiFuncExec.exec();
         }
+        if(isOnReady()) {
+            for (UiFuncExec uiFuncExec : mAfterReadyUiFuncExecList) {
+                uiFuncExec.exec();
+            }
+        }
         requestLayout();
     }
 
@@ -844,15 +893,18 @@ public class HView<T extends View> extends HNode implements ViewPart {
         return uiReaded;
     }
 
+    @Override
     /**
      *
      * 当View在AdapterWapper中使用是会被执行该方法
      *
      * @param position 调用getView方法传入的position
      * @param positionData position对应的数据
+     * @param privateHTemplate
      */
-    public void onAdapterGetView(int position, JsonObject positionData) {
+    public void onAdapterGetView(int position, JsonObject positionData, HTemplate privateHTemplate) {
     }
+
 
     @Override
     public void onRecycle() {

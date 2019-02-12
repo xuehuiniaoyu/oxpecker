@@ -89,6 +89,11 @@
                         layout = "percentage.hj";
                         break;
 
+                    case parseInt(__utils.ID("#id15")):
+                        intent = __reflect.on("Intent").c_("Context", "Class").new_(__context, __reflect.loadClass(pkg+".TestDownloadActivity"));
+                        __context.startActivity(intent);
+                        return;
+
                     default:
                         __console.toast("default " +v.getId())
                 }
@@ -119,6 +124,7 @@
                 text: {id: "id12" text:"Custom Layout" onClick:"javascript:clickFunc"}
                 text: {id: "id13" text:"Pictures(图片欣赏)" onClick:"javascript:clickFunc"}
                 text: {id: "id14" text:"Percentage layout(百分比布局)" onClick:"javascript:clickFunc"}
+                text: {id: "id15" text:"ProgressView(自定义下载)" onClick:"javascript:clickFunc"}
             }
         }
     }
