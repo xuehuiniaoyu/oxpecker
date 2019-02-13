@@ -23,6 +23,7 @@
         <activity android:name=".activity.HelloWorldActivity" />
         <activity android:name=".activity.TestDownloadActivity" />
         <activity android:name=".activity.ImgShowActivity" />
+        <activity android:name=".activity.ConstantActivity" />
     </application>
 
 </manifest>

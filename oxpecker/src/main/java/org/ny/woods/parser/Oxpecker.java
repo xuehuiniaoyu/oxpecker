@@ -2,10 +2,7 @@ package org.ny.woods.parser;
 
 import android.app.Activity;
 import android.content.Context;
-import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
-import android.os.Environment;
 import android.view.View;
 
 import org.ny.woods.dimens.HDimens;
@@ -164,6 +161,7 @@ public class Oxpecker {
 
     public Oxpecker setTemplate(HTemplate hTemplate) {
         this.hTemplate = new HTemplate(hTemplate);
+        this.hTemplate.asFinal(this.context);
         return this;
     }
 

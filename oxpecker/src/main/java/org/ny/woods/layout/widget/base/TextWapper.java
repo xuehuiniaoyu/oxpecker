@@ -44,6 +44,12 @@ public class TextWapper<T extends TextView> extends HView<T> {
     // 设置内容
     public void setText(JsonValue value) {
         String text = value.asString();
+
+        if(text.contains("@string/")) {
+            mView.setText(getResourceId(text));
+            return;
+        }
+
         if (textTemplate == null) {
             textTemplate = value;
         }

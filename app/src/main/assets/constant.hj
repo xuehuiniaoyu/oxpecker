@@ -1,0 +1,189 @@
+{
+    define: {
+        static: {
+            ## 说明
+            splitLine: {
+                tag: {{text-view}}
+                attrs: {
+                    height: auto
+                    backgroundColor: "#666666"
+                    padding: [2, "2dp", 0, "2dp"]
+                    textColor: "#ffffff"
+                    textSize: "16sp"
+                }
+            }
+
+            ## 行布局
+            line: {
+                tag: {{linear-layout}}
+                attrs: {
+                    orien: h
+                    widthWeightSum: 10
+                    backgroundColor: "#ffffff"
+                    margin: [0, "1px", 0, 0]
+                }
+            }
+
+            // 行布局 - key
+            key: {
+                tag: {{text-view}}
+                attrs: {
+                    widthWeight: 3
+                    height: auto
+                    padding: [0, 2, 0, 2]
+                    textAlign: centerH
+                    textColor: "#000000"
+                    textSize: "14sp"
+                    textBold: true
+                }
+            }
+
+            // 行布局 - value
+            value: {
+                tag: {{text-view}}
+                attrs: {
+                    widthWeight: 7
+                    height: auto
+                    padding: [0, 2, 0, 2]
+                    textColor: "#000000"
+                    textSize: "14sp"
+                }
+            }
+        }
+    }
+
+    body: {
+        backgroundColor: "#000000"
+        {{vscroll-layout}}: {
+            {{linear-layout}}: {
+                orien: v
+
+
+        ////// 下面是系统常量
+
+                splitLine: {text: "系统常量"}
+                line: {
+                    key: {text: "package"}
+                    value: {text: "{{package}}"}
+                }
+                line: {
+                    key: {text: "resource"}
+                    value: {text: "{{resource}}"}
+                }
+                line: {
+                    key: {text: "raw"}
+                    value: {text: "{{raw}}"}
+                }
+                line: {
+                    key: {text: "drawable"}
+                    value: {text: "{{drawable}}"}
+                }
+                line: {
+                    key: {text: "color"}
+                    value: {text: "{{color}}"}
+                }
+                line: {
+                    key: {text: "attr"}
+                    value: {text: "{{attr}}"}
+                }
+                line: {
+                    key: {text: "style"}
+                    value: {text: "{{style}}"}
+                }
+                line: {
+                    key: {text: "mipmap"}
+                    value: {text: "{{mipmap}}"}
+                }
+                line: {
+                    key: {text: "assets"}
+                    value: {text: "{{assets}}"}
+                }
+                line: {
+                    key: {text: "sdcard"}
+                    value: {text: "{{sdcard}}"}
+                }
+                line: {
+                    key: {text: "file"}
+                    value: {text: "{{file}}"}
+                }
+                line: {
+                    key: {text: "cache"}
+                    value: {text: "{{cache}}"}
+                }
+                line: {
+                    key: {text: "data"}
+                    value: {text: "{{data}}"}
+                }
+
+
+        ////// 下面是组件
+
+                splitLine: {text: "组件"}
+                line: {
+                    key: {text: "linear-layout"}
+                    value: {text: "{{linear-layout}}"}
+                }
+                line: {
+                    key: {text: "relative-layout"}
+                    value: {text: "{{relative-layout}}"}
+                }
+                line: {
+                    key: {text: "hscroll-layout"}
+                    value: {text: "{{hscroll-layout}}"}
+                }
+                line: {
+                    key: {text: "vscroll-layout"}
+                    value: {text: "{{vscroll-layout}}"}
+                }
+                line: {
+                    key: {text: "default-view"}
+                    value: {text: "{{default-view}}"}
+                }
+                line: {
+                    key: {text: "text-view"}
+                    value: {text: "{{text-view}}"}
+                }
+                line: {
+                    key: {text: "edit-view"}
+                    value: {text: "{{edit-view}}"}
+                }
+                line: {
+                    key: {text: "button-view"}
+                    value: {text: "{{button-view}}"}
+                }
+                line: {
+                    key: {text: "img-view"}
+                    value: {text: "{{img-view}}"}
+                }
+                line: {
+                    key: {text: "list-view"}
+                    value: {text: "{{list-view}}"}
+                }
+                line: {
+                    key: {text: "grid-view"}
+                    value: {text: "{{grid-view}}"}
+                }
+
+        ////// 下面是自定义变量
+
+                splitLine: {text: "自定义变量"}
+                line: {
+                    key: {text: "name1"}
+                    value: {text: "{{name1}}"}
+                }
+                line: {
+                    key: {text: "name2"}
+                    value: {text: "{{name2}}"}
+                }
+                line: {
+                    key: {text: "obj.arg"}
+                    value: {text: "{{obj.arg}}"}
+                }
+                line: {
+                    key: {text: "obj.count"}
+                    value: {text: "{{obj.count}}"}
+                }
+            }
+        }
+    }
+}

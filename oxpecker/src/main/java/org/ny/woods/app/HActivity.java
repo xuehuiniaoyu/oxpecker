@@ -3,12 +3,8 @@ package org.ny.woods.app;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.view.View;
 
 import org.ny.woods.parser.Oxpecker;
@@ -29,7 +25,6 @@ public class HActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        hTemplate.asFinal(this);
     }
 
     @Override

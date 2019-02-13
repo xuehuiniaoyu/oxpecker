@@ -94,6 +94,11 @@
                         __context.startActivity(intent);
                         return;
 
+                    case parseInt(__utils.ID("#id16")):
+                        intent = __reflect.on("Intent").c_("Context", "Class").new_(__context, __reflect.loadClass(pkg+".ConstantActivity"));
+                        __context.startActivity(intent);
+                        return;
+
                     default:
                         __console.toast("default " +v.getId())
                 }
@@ -125,6 +130,7 @@
                 text: {id: "id13" text:"Pictures(图片欣赏)" onClick:"javascript:clickFunc"}
                 text: {id: "id14" text:"Percentage layout(百分比布局)" onClick:"javascript:clickFunc"}
                 text: {id: "id15" text:"ProgressView(自定义下载)" onClick:"javascript:clickFunc"}
+                text: {id: "id16" text:"Constants(系统常量和组件)" onClick:"javascript:clickFunc"}
             }
         }
     }

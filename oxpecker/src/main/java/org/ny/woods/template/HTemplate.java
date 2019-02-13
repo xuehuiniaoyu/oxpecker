@@ -1,5 +1,9 @@
 package org.ny.woods.template;
 
+import android.content.Context;
+import android.os.Build;
+import android.os.Environment;
+
 import com.github.jknack.handlebars.Handlebars;
 
 import org.ny.woods.exception.HException;
@@ -15,7 +19,7 @@ public class HTemplate {
      * 不可被更改的关键字
      */
     private final ArrayList<String> finalKeys = new ArrayList<>();
-    private HashMap<String, Object> dataCaches = new HashMap<String, Object>() {
+    private final HashMap<String, Object> dataCaches = new HashMap<String, Object>() {
         @Override
         public Object get(Object key) {
             if(!containsKey(key)) {
@@ -43,7 +47,7 @@ public class HTemplate {
      * @param value 实际对象
      * @return
      */
-    public HTemplate as(String key, Object value) {
+    public final HTemplate as(String key, Object value) {
         if(finalKeys.contains(key)) {
             throw new HException("The keyword \""+key+"\" can not be replaced!");
         }
@@ -52,16 +56,41 @@ public class HTemplate {
     }
 
     /**
+     *
+     * @param context
+     */
+    public final void asFinal(Context context) {
+        this.asFinal("package", context.getPackageName());
+        this.asFinal("resource", "android.resource://"+context.getPackageName());
+        this.asFinal("raw", this.get("resource")+"/raw");
+        this.asFinal("drawable", this.get("resource")+"/drawable");
+        this.asFinal("color", this.get("resource")+"/color");
+        this.asFinal("attr", this.get("resource")+"/attr");
+        this.asFinal("style", this.get("resource")+"/style");
+        this.asFinal("mipmap", this.get("resource")+"/mipmap");
+        this.asFinal("assets", "file:///android_asset");
+        this.asFinal("sdcard", "file://"+Environment.getExternalStorageDirectory().getPath());
+        this.asFinal("file", "file://"+context.getFilesDir());
+        this.asFinal("cache", "file://"+context.getCacheDir());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            this.asFinal("data", "file://"+context.getDataDir().getAbsoluteFile());
+        }
+        else {
+            this.asFinal("data", "file://"+"/data/data/"+context.getPackageName());
+        }
+    }
+
+    /**
      * 为对象取个别名,添加后不可更改
      * @param key 别名
      * @param value 实际对象
      * @return
      */
-    public HTemplate asFinal(String key, Object value) {
-        as(key, value);
+    public final HTemplate asFinal(String key, Object value) {
         if(!finalKeys.contains(key)) {
             finalKeys.add(key);
         }
+        dataCaches.put(key, value);
         return this;
     }
 

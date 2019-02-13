@@ -1,10 +1,5 @@
 package org.ny.woods.template;
 
-import android.content.Context;
-import android.net.Uri;
-import android.os.Build;
-import android.os.Environment;
-
 import org.ny.woods.layout.widget.HButton;
 import org.ny.woods.layout.widget.HCanvasView;
 import org.ny.woods.layout.widget.HEditText;
@@ -30,24 +25,5 @@ public class SimpleHTemplate extends HTemplate {
         asFinal("img-view", HImageView.class.getName());
         asFinal("list-view", HListView.class.getName());
         asFinal("grid-view", HGridView.class.getName());
-    }
-
-    /**
-     * 映射Context
-     * @param context
-     */
-    public void asFinal(Context context) {
-        this.asFinal("context", context);
-        this.asFinal("package", context.getPackageName());
-        this.asFinal("assets", "file:///android_asset");
-        this.asFinal("raw", "android.resource://"+context.getPackageName()+"/raw");
-        this.asFinal("drawable", "android.resource://"+context.getPackageName()+"/drawable");
-        this.asFinal("sdcard", "file://"+Environment.getExternalStorageDirectory().getPath());
-        this.asFinal("file", "file://"+context.getFilesDir());
-        this.asFinal("cache", "file://"+context.getCacheDir());
-        this.asFinal("/", Uri.fromFile(context.getFilesDir().getParentFile()).getPath());
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            this.asFinal("data", "file://"+context.getDataDir().getAbsoluteFile());
-        }
     }
 }

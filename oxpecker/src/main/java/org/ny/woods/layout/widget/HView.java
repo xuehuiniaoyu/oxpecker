@@ -188,6 +188,8 @@ public class HView<T extends View> extends HNode implements ViewPart {
                 else if(constructors[i].getParameterTypes().length < constructor.getParameterTypes().length) {
                     constructor = constructors[i];
                 }
+                if(constructor.getParameterTypes().length == 1)
+                    break;
             }
             if(constructor == null) {
                 throw new HException("No constructor!");

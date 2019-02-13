@@ -101,11 +101,12 @@ public class TestDownloadActivity extends HActivity {
                     mHandler.post(new Runnable() {
                         @Override
                         public void run() {
-                            BaseAdapter adapter = (BaseAdapter) listView.getAdapter();
-                            if(adapter != null) {
-                                adapter.notifyDataSetChanged();
-                            }
+                            mHandler.removeCallbacks(this);
                             if(!leave) {
+                                BaseAdapter adapter = (BaseAdapter) listView.getAdapter();
+                                if(adapter != null) {
+                                    adapter.notifyDataSetChanged();
+                                }
                                 mHandler.postDelayed(this, 1000);
                             }
                         }
