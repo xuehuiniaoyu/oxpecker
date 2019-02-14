@@ -30,6 +30,6 @@ public class ConstantActivity extends HActivity {
         getHTemplate().as("name1", "自定义变量1");
         getHTemplate().as("name2", getString(R.string.app_name));
         getHTemplate().as("obj", new Obj("Value from Activity", 1));
-        setContentViewFromAssets("constant.hj");
+        setContentViewFromAssets("constant.hj", true);
     }
 }

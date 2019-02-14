@@ -1,13 +1,15 @@
 {
-    define: {
-        static: {
-            text: {
-                tag: {{text-view}}
-                attrs: {
-                    width: auto
-                    height: auto
-                    textColor: "#000000"
-                    text: "50%"
+    head: {
+        define: {
+            views: {
+                text: {
+                    tag: {{text-view}}
+                    attrs: {
+                        width: auto
+                        height: auto
+                        textColor: "#000000"
+                        text: "50%"
+                    }
                 }
             }
         }

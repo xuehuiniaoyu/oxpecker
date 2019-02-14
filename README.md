@@ -66,7 +66,7 @@ compileOptions {
 ```
 {
     define: {
-        static: {
+        views: {
             img: {
                 tag: {{img-view}}
                 attrs: {
@@ -477,15 +477,19 @@ var mView
 ```
 {
 
-    define: {  
-
-        ...
-
-    }
-
     head: {
-
-        ...
+        // 组件申明
+        define: {
+        }
+        
+        // 内部脚本
+        script: '''
+        '''
+        
+        // 外部脚本
+        script: {
+           src: ""
+        }
 
     }
 
@@ -506,9 +510,7 @@ var mView
 
 
 define:{
-
-    myLayout: "xuehuiniaoyu.github.oxpecker.view.MyLayout"
-
+    myLayout: "xuehuiniaoyu.github.oxpecker.view.MyLayout"
 }
 ```
 
@@ -526,32 +528,19 @@ myLayout: {
 ###### 2.如果你的布局中有大量重复配置，你希望一个公共组件来帮你完成这些繁琐的配置。
 
 ```
-define {  
-
-    static: {  
-
-        // 申明一个公共组件，名为layout1
-
-        layout1: {
-
-            tag: {{relative-layout}}
-
-            attrs: {
-
-                width: fill
-
-                height: fill
-
-                background: "#cccccc"
-
-                ......
-
-            }
-
-        }
-
-    }
-
+head: {
+    define {
+        // 申明一个公共组件，名为layout1
+        layout1: {
+            tag: {{relative-layout}}
+            attrs: {
+                width: fill
+                height: fill
+                background: "#cccccc"
+                ......
+            }
+        }
+    }
 }
 
 body: {

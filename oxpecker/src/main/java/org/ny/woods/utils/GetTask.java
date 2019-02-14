@@ -4,6 +4,9 @@ import android.content.Context;
 
 import org.ny.woods.exception.HException;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -69,6 +72,19 @@ public class GetTask {
             else if(uri.contains("/raw/")) {
                 int resId = reflect.clear().on(context.getPackageName() + ".R$raw").get(uri.split("/raw/")[1]);
                 inputStream = context.getResources().openRawResource(resId);
+            }
+            else if(uri.contains("/xml/")) {
+                int resId = reflect.clear().on(context.getPackageName() + ".R$xml").get(uri.split("/xml/")[1]);
+                inputStream = context.getResources().openRawResource(resId);
+            }
+            else {
+                if(uri.contains("file://")) {
+                    try {
+                        inputStream = new FileInputStream(new File(uri));
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
 
             if(inputStream != null) {

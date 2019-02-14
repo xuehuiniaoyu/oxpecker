@@ -12,6 +12,6 @@ public class ImgShowActivity extends HActivity {
         super.onCreate(savedInstanceState);
         String src = getIntent().getStringExtra("src");
         getHTemplate().as("img-name", new File(src).getName());
-        setContentViewFromAssets("img_show.hj");
+        setContentViewFromAssets("img_show.hj", false);
     }
 }

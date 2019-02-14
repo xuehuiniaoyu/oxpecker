@@ -49,6 +49,9 @@ public class JsChannel {
      * @return
      */
     public Object loadJs(String js){
+        if(Context.getCurrentContext() == null) {
+            Context.enter();
+        }
         try {
             return rhino.evaluateString(scope, js, "loadJs", 1, null);
         } catch (Exception e) {

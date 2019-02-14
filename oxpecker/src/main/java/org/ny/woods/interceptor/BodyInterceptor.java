@@ -17,18 +17,11 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 public class BodyInterceptor implements HInterceptor<HView<? extends View>> {
-
     /**
      *
      * 自定义静态申明，可重用的代码块
      */
-    private final HashMap<String, StaticInfo> user_static = new HashMap<>();
-
-    /**
-     *
-     * 自定义别名
-     */
-    private final HashMap<String, String> user_define = new HashMap<>();
+    private final HashMap<String, ViewInfo> define_views = new HashMap<>();
 
     /**
      * 上下文
@@ -45,7 +38,7 @@ public class BodyInterceptor implements HInterceptor<HView<? extends View>> {
      *
      * 静态申明对象
      */
-    private static final class StaticInfo {
+    private static final class ViewInfo {
         /**
          *
          * 为后面代码使用的名称
@@ -74,30 +67,31 @@ public class BodyInterceptor implements HInterceptor<HView<? extends View>> {
         DisplayMetrics displayMetrics = new DisplayMetrics();
         wm.getDefaultDisplay().getMetrics(displayMetrics);
         this.dimens.displayMetrics = displayMetrics;
-        JsonValue define = jsonObject.get("define");
-        if(define != null) {
-            Iterator<JsonObject.Member> iterator = define.asObject().iterator();
-            while (iterator.hasNext()) {
-                JsonObject.Member member = iterator.next();
-                if(member.getName().equals("static")) {
-                    Iterator<JsonObject.Member> i = member.getValue().asObject().iterator();
-                    while(i.hasNext()) {
-                        JsonObject.Member static_M = i.next();
-                        JsonObject defineObj = static_M.getValue().asObject();
-                        StaticInfo staticInfo = new StaticInfo();
-                        staticInfo.name = static_M.getName();
-                        staticInfo.value = defineObj.get("attrs").asObject();
-                        staticInfo.tagName = defineObj.getString("tag", null);
-                        user_static.put(staticInfo.name, staticInfo);
+        JsonValue head = jsonObject.get("head");
+        if (head != null) {
+            JsonValue define = head.asObject().get("define");
+            if (define != null) {
+                // 申明组件
+                Iterator<JsonObject.Member> iterator = define.asObject().iterator();
+                while (iterator.hasNext()) {
+                    JsonObject.Member view_M = iterator.next();
+                    ViewInfo viewInfo = new ViewInfo();
+                    viewInfo.name = view_M.getName();
+                    if (view_M.getValue().isObject()) {
+                        JsonObject defineObj = view_M.getValue().asObject();
+                        viewInfo.tagName = defineObj.getString("tag", null);
+                        JsonValue attrs = defineObj.get("attrs");
+                        if (attrs != null) {
+                            viewInfo.value = attrs.asObject();
+                        }
+                    } else {
+                        viewInfo.tagName = view_M.getValue().asString();
                     }
-                }
-                else {
-                    user_define.put(member.getName(), member.getValue().asString());
+                    define_views.put(viewInfo.name, viewInfo);
                 }
             }
         }
-        JsonObject body = jsonObject.get("body").asObject();
-        HRelativeLayout bodyLayout = new HRelativeLayout(context, body);
+        HRelativeLayout bodyLayout = new HRelativeLayout(context, jsonObject.get("body"));
         bodyLayout.dimens(dimens);
         final HView<? extends View> layoutHNode = recursionChildren(bodyLayout);
         layoutHNode.getView().post(new Runnable() {
@@ -141,10 +135,8 @@ public class BodyInterceptor implements HInterceptor<HView<? extends View>> {
     }
 
     String getTagName(String name) {
-        if(user_static.containsKey(name))
-            return user_static.get(name).tagName;
-        if(user_define.containsKey(name))
-            return user_define.get(name);
+        if(define_views.containsKey(name))
+            return define_views.get(name).tagName;
         return name;
     }
 
@@ -154,12 +146,14 @@ public class BodyInterceptor implements HInterceptor<HView<? extends View>> {
      * @param hView
      */
     void staticInit(String name, HView<?> hView) {
-        if(user_static.containsKey(name)) {
-            StaticInfo staticInfo = user_static.get(name);
-            Iterator<JsonObject.Member> iterator = staticInfo.value.iterator();
-            while (iterator.hasNext()) {
-                JsonObject.Member member = iterator.next();
-                hView.setAttr(member.getName(), member.getValue());
+        if(define_views.containsKey(name)) {
+            ViewInfo viewInfo = define_views.get(name);
+            if(viewInfo.value != null) {
+                Iterator<JsonObject.Member> iterator = viewInfo.value.iterator();
+                while (iterator.hasNext()) {
+                    JsonObject.Member member = iterator.next();
+                    hView.setAttr(member.getName(), member.getValue());
+                }
             }
         }
     }

@@ -1,8 +1,8 @@
 {
-    define: {
-        ProgressBar: xuehuiniaoyu.github.oxpecker.view.MyProgressBar
-    }
     head: {
+        define: {
+            ProgressBar: xuehuiniaoyu.github.oxpecker.view.MyProgressBar
+        }
         script:
         '''
             __package.require("xuehuiniaoyu.github.oxpecker.activity.ImgShowActivity").as("ImgShowActivity");

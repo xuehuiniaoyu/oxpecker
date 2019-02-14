@@ -6,7 +6,10 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.DecelerateInterpolator;
 
+import org.ny.woods.exception.HException;
+import org.ny.woods.layout.widget.i.ViewPart;
 import org.ny.woods.parser.Oxpecker;
 import org.ny.woods.template.HTemplate;
 import org.ny.woods.template.SimpleHTemplate;
@@ -15,11 +18,27 @@ import org.ny.woods.utils.GetTask;
 import org.ny.woods.utils.IDUtil;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class HActivity extends Activity {
+public class HActivity extends Activity implements Oxpecker.AsyncTytpe.Callback {
+
+    @Override
+    public void onFailed(Exception e, Oxpecker oxpecker) {
+
+    }
+
+    @Override
+    public void onSuccess(ViewPart<? extends View> hView, Oxpecker oxpecker) {
+        setContentView(hView.getView());
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB) {
+            ObjectAnimator animator = ObjectAnimator.ofFloat(hView.getView(), "alpha", 0F, 1F);
+            animator.setInterpolator(new DecelerateInterpolator());
+            animator.setDuration(600);
+            animator.start();
+        }
+    }
+
     private Oxpecker oxpecker;
     private SimpleHTemplate hTemplate = new SimpleHTemplate();
     @Override
@@ -31,11 +50,6 @@ public class HActivity extends Activity {
     public void setContentView(View view) {
         super.setContentView(view);
         getOxpecker().startPecking();
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB) {
-            ObjectAnimator fadeAnim = ObjectAnimator.ofFloat( view, "alpha", 0.0F, 1.0F );
-            fadeAnim.setDuration( 600 );
-            fadeAnim.start();
-        }
     }
 
     /**
@@ -53,11 +67,18 @@ public class HActivity extends Activity {
      * 从Assets加载模板
      * @param templateName xxx.hjson
      */
-    public void setContentViewFromAssets(String templateName) {
+    public void setContentViewFromAssets(String templateName, boolean async) {
+        InputStream ins;
         try {
-            setContentView(getOxpecker().parse(getAssets().open(templateName)).getView());
+            ins = getAssets().open(templateName);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new HException(e.getLocalizedMessage());
+        }
+        if(async) {
+            getOxpecker().inflaterAsync(new Oxpecker.AsyncTytpe(ins, Oxpecker.AsyncTytpe.STREAM), this);
+        }
+        else {
+            setContentView(getOxpecker().parse(ins).getView());
         }
     }
 
@@ -66,8 +87,8 @@ public class HActivity extends Activity {
      * 从File加载模板
      * @param file
      */
-    public void setContentViewFromFile(String file) {
-        setContentViewFromFile(new File(file));
+    public void setContentViewFromFile(String file, boolean async) {
+        setContentViewFromFile(new File(file), async);
     }
 
 
@@ -75,11 +96,12 @@ public class HActivity extends Activity {
      * 从File加载模板
      * @param file
      */
-    public void setContentViewFromFile(File file) {
-        try {
-            setContentView(getOxpecker().parse(new FileInputStream(file)).getView());
-        } catch (IOException e) {
-            e.printStackTrace();
+    public void setContentViewFromFile(File file, boolean async) {
+        if(async) {
+            getOxpecker().inflaterAsync(new Oxpecker.AsyncTytpe(file, Oxpecker.AsyncTytpe.FILE), this);
+        }
+        else {
+            setContentView(getOxpecker().parse(file).getView());
         }
     }
 
@@ -87,11 +109,12 @@ public class HActivity extends Activity {
      * 从流加载布局
      * @param inputStream
      */
-    public void setContentViewFromStream(InputStream inputStream) {
-        try {
+    public void setContentViewFromStream(InputStream inputStream, boolean async) {
+        if(async) {
+            getOxpecker().inflaterAsync(new Oxpecker.AsyncTytpe(inputStream, Oxpecker.AsyncTytpe.STREAM), this);
+        }
+        else {
             setContentView(getOxpecker().parse(inputStream).getView());
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
@@ -100,7 +123,7 @@ public class HActivity extends Activity {
      * 从Uri加载布局
      * @param uri
      */
-    public void setContentViewFromUri(String uri) {
+    public void setContentViewFromUri(String uri, boolean async) {
         GetTask getTask = new GetTask(this, uri);
         getTask.setOnResourceLoadListener(new GetTask.OnResourceLoadListener() {
             @Override
@@ -110,7 +133,7 @@ public class HActivity extends Activity {
 
             @Override
             public void onLoadSucc(String uri, String resource) {
-                setContentView(resource);
+                setContentView(resource, async);
             }
         }).load();
     }
@@ -119,23 +142,21 @@ public class HActivity extends Activity {
      * 从Raw加载模板
      * @param template
      */
-    public void setContentViewFromRaw(int template) {
-        try {
-            setContentView(getOxpecker().parse(getResources().openRawResource(template)).getView());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public void setContentViewFromRaw(int template, boolean async) {
+        InputStream inputStream = getResources().openRawResource(template);
+        setContentViewFromStream(inputStream, async);
     }
 
     /**
      * 加载模板
      * @param template
      */
-    public void setContentView(String template) {
-        try {
+    public void setContentView(String template, boolean async) {
+        if(async) {
+            getOxpecker().inflaterAsync(new Oxpecker.AsyncTytpe(template, Oxpecker.AsyncTytpe.STRING), this);
+        }
+        else {
             setContentView(getOxpecker().parse(template).getView());
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
@@ -170,7 +191,9 @@ public class HActivity extends Activity {
         super.onDestroy();
         if(oxpecker != null) {
             oxpecker.finishPecking();
+            oxpecker = null;
         }
+        hTemplate = null;
         FixMemLeak4Hw.fixLeak(this);
     }
 }

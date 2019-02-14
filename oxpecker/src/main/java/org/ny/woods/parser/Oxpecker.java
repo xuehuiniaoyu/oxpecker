@@ -7,6 +7,7 @@ import android.view.View;
 
 import org.ny.woods.dimens.HDimens;
 import org.ny.woods.dimens.PercentDimens;
+import org.ny.woods.exception.HException;
 import org.ny.woods.interceptor.BodyInterceptor;
 import org.ny.woods.interceptor.ScriptInterceptor;
 import org.ny.woods.js.channel.JsChannel;
@@ -305,8 +306,13 @@ public class Oxpecker {
      * @return
      * @throws IOException
      */
-    public ViewPart<? extends View> parse(InputStream inputStream) throws IOException {
-        String template = hTemplate.apply(inputStream);
+    public ViewPart<? extends View> parse(InputStream inputStream) {
+        String template;
+        try {
+            template = hTemplate.apply(inputStream);
+        } catch (IOException e) {
+            throw new HException(e.getLocalizedMessage());
+        }
         return inflater(template);
     }
 
@@ -316,8 +322,13 @@ public class Oxpecker {
      * @return
      * @throws IOException
      */
-    public ViewPart<? extends View> parse(String source) throws IOException {
-        String template = hTemplate.apply(source);
+    public ViewPart<? extends View> parse(String source) {
+        String template;
+        try {
+            template = hTemplate.apply(source);
+        } catch (IOException e) {
+            throw new HException(e.getLocalizedMessage());
+        }
         return inflater(template);
     }
 
@@ -327,13 +338,14 @@ public class Oxpecker {
      * @return
      * @throws IOException
      */
-    public ViewPart<? extends View> parse(File file) throws IOException{
+    public ViewPart<? extends View> parse(File file){
+        String template;
         try {
-            String template = hTemplate.apply(new FileInputStream(file));
-            return inflater(template);
+            template = hTemplate.apply(new FileInputStream(file));
         } catch (IOException e) {
-            throw e;
+            throw new HException(e.getLocalizedMessage());
         }
+        return inflater(template);
     }
 
     public HTemplate getTemplate() {

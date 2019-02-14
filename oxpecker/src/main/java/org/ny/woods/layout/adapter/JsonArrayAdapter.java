@@ -10,14 +10,12 @@ import android.widget.GridView;
 import org.hjson.JsonArray;
 import org.hjson.JsonObject;
 import org.ny.woods.dimens.HDimens;
-import org.ny.woods.exception.HLayoutException;
 import org.ny.woods.layout.widget.HView;
 import org.ny.woods.layout.widget.base.AdapterWapper;
 import org.ny.woods.layout.widget.i.ViewPart;
 import org.ny.woods.parser.Oxpecker;
 import org.ny.woods.template.HTemplate;
 
-import java.io.IOException;
 import java.util.HashMap;
 
 /**
@@ -117,10 +115,8 @@ public class JsonArrayAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewPart<? extends View> hView;
         if (convertView == null) {
-            try {
-                hView = oxpecker.parse(layoutString);
-                mHViewCache.put(convertView=hView.getView(), hView);
-            } catch (IOException e) { throw new HLayoutException(e.getMessage()); }
+            hView = oxpecker.parse(layoutString);
+            mHViewCache.put(convertView=hView.getView(), hView);
         }
 
 

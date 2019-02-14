@@ -8,6 +8,6 @@ public class MainActivity extends HActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentViewFromAssets("main.hj");
+        setContentViewFromAssets("main.hj", true);
     }
 }

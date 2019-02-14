@@ -21,6 +21,7 @@ import xuehuiniaoyu.github.oxpecker.utils.DownloadUtil;
 
 public class TestDownloadActivity extends HActivity {
 
+    Handler mHandler;
     private boolean leave;
 
     public static class DownloadInfo {
@@ -97,17 +98,19 @@ public class TestDownloadActivity extends HActivity {
                     ListView listView = findViewById(IDUtil.id("#listView"));
 
                     // 1秒刷新一次
-                    Handler mHandler = new Handler();
+                    mHandler = new Handler();
                     mHandler.post(new Runnable() {
                         @Override
                         public void run() {
-                            mHandler.removeCallbacks(this);
-                            if(!leave) {
-                                BaseAdapter adapter = (BaseAdapter) listView.getAdapter();
-                                if(adapter != null) {
-                                    adapter.notifyDataSetChanged();
+                            if(mHandler != null) {
+                                mHandler.removeCallbacks(this);
+                                if (!leave) {
+                                    BaseAdapter adapter = (BaseAdapter) listView.getAdapter();
+                                    if (adapter != null) {
+                                        adapter.notifyDataSetChanged();
+                                    }
+                                    mHandler.postDelayed(this, 1000);
                                 }
-                                mHandler.postDelayed(this, 1000);
                             }
                         }
                     });
@@ -141,5 +144,6 @@ public class TestDownloadActivity extends HActivity {
     protected void onDestroy() {
         super.onDestroy();
         leave = true;
+        mHandler = null;
     }
 }

@@ -41,6 +41,13 @@ public class HTemplate {
         this.finalKeys.addAll(hTemplate.finalKeys);
     }
 
+    public int size(boolean hasFinal) {
+        if(hasFinal) {
+            return dataCaches.size();
+        }
+        return dataCaches.size() - finalKeys.size();
+    }
+
     /**
      * 为对象取个别名
      * @param key 别名

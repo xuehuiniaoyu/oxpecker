@@ -1,4 +1,12 @@
 {
+    head: {
+        script: '''
+            function itemClick(parent, view, position, id) {
+                __console.toast(position)
+            }
+
+        '''
+    }
     body: {
         {{list-view}}: {
             id: listView
@@ -12,7 +20,7 @@
             //listSelector: "drawable/listSelector"
             listSelector: "@null"
             drawSelectorOnTop: false
-            //onItemClick: "javascript:itemClick"
+            onItemClick: "javascript:itemClick"
             //onItemSelected: "javascript:onFocus"
             hGap: 1
             vGap: 1

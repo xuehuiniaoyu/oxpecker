@@ -1,6 +1,6 @@
 {
-    define: {
-        static: {
+    head: {
+        define: {
             ## 说明
             splitLine: {
                 tag: {{text-view}}
@@ -164,9 +164,9 @@
                     value: {text: "{{grid-view}}"}
                 }
 
-        ////// 下面是自定义变量
+        ////// 下面是自定义常量
 
-                splitLine: {text: "自定义变量"}
+                splitLine: {text: "自定义常量"}
                 line: {
                     key: {text: "name1"}
                     value: {text: "{{name1}}"}

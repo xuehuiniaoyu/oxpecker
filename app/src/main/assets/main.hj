@@ -1,6 +1,7 @@
 {
-    define: {
-        static: {
+
+    head: {
+        define: {
             text: {
                 tag: {{text-view}}
                 attrs: {
@@ -15,9 +16,7 @@
                 }
             }
         }
-    }
 
-    head: {
         script:
             '''
             __package.require("android.content.Intent").as("Intent");

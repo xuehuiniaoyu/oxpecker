@@ -1,6 +1,7 @@
 package org.ny.woods.layout.widget.base;
 
 import android.content.Context;
+import android.support.annotation.CallSuper;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -16,6 +17,8 @@ public class GroupWapper<T extends ViewGroup> extends HView<T> {
         super(context, value);
     }
 
+    @Override
+    @CallSuper
     public void onMeasure(int parentWidth, int parentHeight) {
         super.onMeasure(parentWidth, parentHeight);
         if(getChildren() != null) {
@@ -28,6 +31,7 @@ public class GroupWapper<T extends ViewGroup> extends HView<T> {
     }
 
     @Override
+    @CallSuper
     public void onLayout() {
         super.onLayout();
         if(getChildren() != null) {
@@ -40,6 +44,7 @@ public class GroupWapper<T extends ViewGroup> extends HView<T> {
     }
 
     @Override
+    @CallSuper
     public void setJsChannel(JsChannel jsChannel) {
         super.setJsChannel(jsChannel);
         if(getChildren() != null) {
@@ -52,6 +57,7 @@ public class GroupWapper<T extends ViewGroup> extends HView<T> {
     }
 
     @Override
+    @CallSuper
     public void setOxpecker(Oxpecker oxpecker) {
         super.setOxpecker(oxpecker);
         if(getChildren() != null) {
@@ -64,6 +70,7 @@ public class GroupWapper<T extends ViewGroup> extends HView<T> {
     }
 
     @Override
+    @CallSuper
     public void onAdapterGetView(int position, JsonObject positionData, HTemplate privateHTemplate) {
         super.onAdapterGetView(position, positionData, privateHTemplate);
         if(getChildren() != null) {

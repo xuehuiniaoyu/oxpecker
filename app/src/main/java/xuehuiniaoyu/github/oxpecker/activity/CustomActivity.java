@@ -8,7 +8,7 @@ public class CustomActivity extends HActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentViewFromAssets(getIntent().getStringExtra("layout"));
+        setContentViewFromAssets(getIntent().getStringExtra("layout"), true);
     }
 
 }

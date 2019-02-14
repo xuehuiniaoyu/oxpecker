@@ -1,10 +1,11 @@
 {
-    // 标签的生命和组件的申明
-    define: {
-        ### 申明一个名为 layotu 的组件，该组件是一个 relative-layout 组件
-        layout: {{relative-layout}}
-        static: {
-            ### 申明一个公共组件，名字为 text
+    head: {
+        # 标签的生命和组件的申明
+        define: {
+            // 申明一个名为 layout 的组件，该组件是一个 relative-layout 组件
+            layout: {{relative-layout}}
+
+            // 申明一个公共组件，名字为 text
             text: {
                 tag: {{text-view}}
                 attrs: {
@@ -16,9 +17,7 @@
                 }
             }
         }
-    }
 
-    head: {
         /*
         script:
             '''

@@ -61,6 +61,11 @@ public class HImageView extends HView<ImageView> {
     @Override
     public void onLayout() {
         super.onLayout();
+    }
+
+    @Override
+    protected void onUiReady() {
+        super.onUiReady();
         if (src != null) {
             String valueString = src.asString();
             if(HUri.isUri(valueString)) {

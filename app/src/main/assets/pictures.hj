@@ -1,6 +1,6 @@
 {
-    define: {
-        static: {
+    head: {
+        define: {
             img: {
                 tag: {{img-view}}
                 attrs: {

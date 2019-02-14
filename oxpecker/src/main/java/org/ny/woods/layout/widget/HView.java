@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.support.annotation.CallSuper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -850,6 +851,7 @@ public class HView<T extends View> extends HNode implements ViewPart {
         });
     }
 
+    @CallSuper
     public void onMeasure(int parentWidth, int parentHeight) {
         Log.i("HView onMeasure", mView.getClass().getSimpleName() + " onMeasure:" + parentWidth + ", " + parentHeight);
         dimens.set(parentWidth, parentHeight).ok();
@@ -880,7 +882,8 @@ public class HView<T extends View> extends HNode implements ViewPart {
     /**
      * 当View被添加到Ui线程中之后执行
      */
-    protected final void onUiReady() {
+    @CallSuper
+    protected void onUiReady() {
         for (UiFuncExec uiFuncExec : mAfterReadyUiFuncExecList) {
             uiFuncExec.exec();
         }
@@ -909,7 +912,9 @@ public class HView<T extends View> extends HNode implements ViewPart {
 
 
     @Override
+    @CallSuper
     public void onRecycle() {
         super.onRecycle();
+        oxpecker = null;
     }
 }
