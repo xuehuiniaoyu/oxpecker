@@ -65,7 +65,8 @@ compileOptions {
 
 ```
 {
-    define: {
+    head: {
+      define: {
         views: {
             img: {
                 tag: {{img-view}}
@@ -75,6 +76,7 @@ compileOptions {
                 }
             }
         }
+      }
     }
     body: {
         {{vscroll-layout}}: {
