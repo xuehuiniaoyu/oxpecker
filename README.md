@@ -67,15 +67,13 @@ compileOptions {
 {
     head: {
       define: {
-        views: {
-            img: {
-                tag: {{img-view}}
-                attrs: {
-                    width: fill
-                    height: auto
-                }
+        img: {
+          tag: {{img-view}}
+            attrs: {
+              width: fill
+              height: auto
             }
-        }
+         }
       }
     }
     body: {
