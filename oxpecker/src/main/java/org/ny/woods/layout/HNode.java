@@ -8,7 +8,6 @@ import org.ny.woods.layout.widget.HView;
 import org.ny.woods.os.Message;
 import org.ny.woods.os.MsgHandler;
 
-import java.lang.ref.WeakReference;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,7 +25,7 @@ public class HNode {
     private List<HNode> children;
     private HashMap<String, String> methodExtension = new HashMap<>();
 
-    private WeakReference<HNode> parent;
+    private HNode parent;
 
     /**
      *
@@ -51,8 +50,6 @@ public class HNode {
         this.value = value;
         // 解析注解
         loadExtensions(this.getClass());
-        msgHandler = new MsgHandler();
-        msgHandler.addListener(msgCallback);
     }
 
     public boolean isDied() {
@@ -85,13 +82,20 @@ public class HNode {
             children = new ArrayList<>();
         }
         children.add(hNode);
-        hNode.parent = new WeakReference<>(this);
+        hNode.parent = this;
+        if(parent != null) {
+            msgHandler = parent.msgHandler;
+        }
+        else {
+            msgHandler = new MsgHandler();
+        }
+        msgHandler.addListener(msgCallback);
     }
 
     public <T extends HView<? extends View>> T getParent() {
         if(parent == null)
             return null;
-        return (T) parent.get();
+        return (T) parent;
     }
 
     /**
@@ -147,10 +151,7 @@ public class HNode {
                 hNode.onRecycle();
             }
         }
-        if(parent != null) {
-            parent.clear();
-            parent = null;
-        }
+        parent = null;
         died = true;
     }
 
