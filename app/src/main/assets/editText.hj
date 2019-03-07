@@ -2,17 +2,35 @@
     head: {
         script:
             '''
-            var textView = __context.findViewById("#text");
-            textView.setText("Hello! World!");
+            //var textView = __context.findViewById("#text");
+            //textView.setText("Hello! World!");
+
+            ///////////////////////////////////////////////////////////
+            ///////////////////////////////////////////////////////////
+            ///////////////////////////////////////////////////////////
+
+            //    利用消息传递的方法实现HView之间数据共享和交换
+
+            ///////////////////////////////////////////////////////////
+            ///////////////////////////////////////////////////////////
+            ///////////////////////////////////////////////////////////
+
+            // 申明一个全局传递的消息体
+            var msg = __reflect.on("org.ny.woods.os.Message").c_().new_();
+            msg.setWhat(0);
 
             function onTextChange(text) {
-                textView.setText(text);
+                //textView.setText(text);
+
+                msg.setObj(text)
+                __context.sendMsg(msg)
             }
             '''
     }
     body: {
-        {{text-view}}: {
+        xuehuiniaoyu.github.oxpecker.view.ListenerTextView: {
             id: text
+            text: "Hello! World!"
         }
 
         {{edit-view}}: {

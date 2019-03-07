@@ -478,18 +478,18 @@ var mView
 {
 
     head: {
-        // 组件申明
-        define: {
-        }
-        
-        // 内部脚本
-        script: '''
-        '''
-        
-        // 外部脚本
-        script: {
-           src: ""
-        }
+        // 组件申明
+        define: {
+        }
+
+        // 内部脚本
+        script: '''
+        '''
+
+        // 外部脚本
+        script: {
+           src: ""
+        }
 
     }
 
@@ -510,7 +510,7 @@ var mView
 
 
 define:{
-    myLayout: "xuehuiniaoyu.github.oxpecker.view.MyLayout"
+    myLayout: "xuehuiniaoyu.github.oxpecker.view.MyLayout"
 }
 ```
 
@@ -530,17 +530,17 @@ myLayout: {
 ```
 head: {
     define {
-        // 申明一个公共组件，名为layout1
-        layout1: {
-            tag: {{relative-layout}}
-            attrs: {
-                width: fill
-                height: fill
-                background: "#cccccc"
-                ......
-            }
-        }
-    }
+        // 申明一个公共组件，名为layout1
+        layout1: {
+            tag: {{relative-layout}}
+            attrs: {
+                width: fill
+                height: fill
+                background: "#cccccc"
+                ......
+            }
+        }
+    }
 }
 
 body: {
@@ -688,3 +688,46 @@ function clickMethod(view) {
 
 }
 ```
+
+## 消息传递，实现多HView间消息通信
+
+
+
+```
+/**
+ *
+ * 监听内容变化显示的TextView
+ */
+public class ListenerTextView extends HTextView {
+    public ListenerTextView(Context context, JsonValue value) {
+        super(context, value);
+    }
+
+    // 接收消息
+    @Override
+    public void onHandleMsg(Message msg) {
+
+        if(msg.getWhat() == 0) {
+            mView.setText(msg.getObj());
+        }
+    }
+    
+
+
+
+
+
+    // 发送消息（自己也会收到）
+    public void myBusiness() {
+        // ...
+        // 如果业务需要与其他HView进行数据传递，就需要发送消息
+        sendMsg(new Message(0, obj))
+    }
+}
+```
+
+
+
+
+
+

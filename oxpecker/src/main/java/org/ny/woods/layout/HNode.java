@@ -5,6 +5,8 @@ import android.view.View;
 import org.hjson.JsonValue;
 import org.ny.woods.annotations.Extension;
 import org.ny.woods.layout.widget.HView;
+import org.ny.woods.os.Message;
+import org.ny.woods.os.MsgHandler;
 
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Method;
@@ -26,6 +28,22 @@ public class HNode {
 
     private WeakReference<HNode> parent;
 
+    /**
+     *
+     * 消息传送Handler
+     */
+    private MsgHandler msgHandler;
+    private final MsgHandler.Callback msgCallback = new MsgHandler.Callback() {
+        @Override
+        public void onHandleMsg(Message msg) {
+            if(children != null) {
+                for(HNode hNode : children) {
+                    hNode.onHandleMsg(msg);
+                }
+            }
+        }
+    };
+
     // 是否结束
     private boolean died;
 
@@ -33,6 +51,8 @@ public class HNode {
         this.value = value;
         // 解析注解
         loadExtensions(this.getClass());
+        msgHandler = new MsgHandler();
+        msgHandler.addListener(msgCallback);
     }
 
     public boolean isDied() {
@@ -121,6 +141,7 @@ public class HNode {
      * 销毁、回收
      */
     public void onRecycle() {
+        msgHandler.removeListener(msgCallback);
         if(children != null) {
             for(HNode hNode : children) {
                 hNode.onRecycle();
@@ -131,5 +152,21 @@ public class HNode {
             parent = null;
         }
         died = true;
+    }
+
+    public MsgHandler getMsgHandler() {
+        return msgHandler;
+    }
+
+    public void onHandleMsg(Message msg) {
+
+    }
+
+    /**
+     * 发送消息
+     * @param msg
+     */
+    public final void sendMsg(Message msg) {
+        getMsgHandler().sendMsg(msg);
     }
 }

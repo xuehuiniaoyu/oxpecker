@@ -10,6 +10,7 @@ import android.view.animation.DecelerateInterpolator;
 
 import org.ny.woods.exception.HException;
 import org.ny.woods.layout.widget.i.ViewPart;
+import org.ny.woods.os.Message;
 import org.ny.woods.parser.Oxpecker;
 import org.ny.woods.template.HTemplate;
 import org.ny.woods.template.SimpleHTemplate;
@@ -183,6 +184,14 @@ public class HActivity extends Activity implements Oxpecker.AsyncTytpe.Callback 
         Intent intent = new Intent();
         intent.setComponent(new ComponentName(this, className));
         startActivity(intent);
+    }
+
+    /**
+     * 发送全局消息
+     * @param msg
+     */
+    public void sendMsg(Message msg) {
+        getOxpecker().sendMsg(msg);
     }
 
 

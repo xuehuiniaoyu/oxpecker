@@ -20,6 +20,7 @@ import org.ny.woods.js.native_object.reflect.RobustReflect;
 import org.ny.woods.js.native_object.util.Utils;
 import org.ny.woods.layout.widget.HView;
 import org.ny.woods.layout.widget.i.ViewPart;
+import org.ny.woods.os.Message;
 import org.ny.woods.parser.proxy.DynamicProxy;
 import org.ny.woods.template.HTemplate;
 import org.ny.woods.template.SimpleHTemplate;
@@ -350,5 +351,15 @@ public class Oxpecker {
 
     public HTemplate getTemplate() {
         return hTemplate;
+    }
+
+    /**
+     * 发送全局消息
+     * @param msg
+     */
+    public void sendMsg(Message msg) {
+        if(hView != null) {
+            hView.sendMsg(msg);
+        }
     }
 }

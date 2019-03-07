@@ -5,6 +5,7 @@ import android.view.View;
 
 import org.hjson.JsonObject;
 import org.ny.woods.js.channel.JsChannel;
+import org.ny.woods.os.Message;
 import org.ny.woods.template.HTemplate;
 
 /**
@@ -32,4 +33,10 @@ public interface ViewPart<T extends View> {
     JsChannel getJsChannel();
 
     Context getContext();
+
+    /**
+     * 发送消息
+     * @param msg
+     */
+    void sendMsg(Message msg);
 }
