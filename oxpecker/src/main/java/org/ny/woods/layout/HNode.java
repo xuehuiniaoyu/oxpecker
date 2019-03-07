@@ -5,8 +5,6 @@ import android.view.View;
 import org.hjson.JsonValue;
 import org.ny.woods.annotations.Extension;
 import org.ny.woods.layout.widget.HView;
-import org.ny.woods.os.Message;
-import org.ny.woods.os.MsgHandler;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -26,22 +24,6 @@ public class HNode {
     private HashMap<String, String> methodExtension = new HashMap<>();
 
     private HNode parent;
-
-    /**
-     *
-     * 消息传送Handler
-     */
-    private MsgHandler msgHandler;
-    private final MsgHandler.Callback msgCallback = new MsgHandler.Callback() {
-        @Override
-        public void onHandleMsg(Message msg) {
-            if(children != null) {
-                for(HNode hNode : children) {
-                    hNode.onHandleMsg(msg);
-                }
-            }
-        }
-    };
 
     // 是否结束
     private boolean died;
@@ -83,13 +65,6 @@ public class HNode {
         }
         children.add(hNode);
         hNode.parent = this;
-        if(parent != null) {
-            msgHandler = parent.msgHandler;
-        }
-        else {
-            msgHandler = new MsgHandler();
-        }
-        msgHandler.addListener(msgCallback);
     }
 
     public <T extends HView<? extends View>> T getParent() {
@@ -145,7 +120,6 @@ public class HNode {
      * 销毁、回收
      */
     public void onRecycle() {
-        msgHandler.removeListener(msgCallback);
         if(children != null) {
             for(HNode hNode : children) {
                 hNode.onRecycle();
@@ -153,21 +127,5 @@ public class HNode {
         }
         parent = null;
         died = true;
-    }
-
-    public MsgHandler getMsgHandler() {
-        return msgHandler;
-    }
-
-    public void onHandleMsg(Message msg) {
-
-    }
-
-    /**
-     * 发送消息
-     * @param msg
-     */
-    public final void sendMsg(Message msg) {
-        getMsgHandler().sendMsg(msg);
     }
 }

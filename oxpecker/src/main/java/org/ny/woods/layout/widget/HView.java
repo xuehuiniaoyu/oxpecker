@@ -33,6 +33,8 @@ import org.ny.woods.layout.HNode;
 import org.ny.woods.layout.tools.FunctionExec;
 import org.ny.woods.layout.tools.UiFuncExec;
 import org.ny.woods.layout.widget.i.ViewPart;
+import org.ny.woods.os.Message;
+import org.ny.woods.os.MsgHandler;
 import org.ny.woods.parser.Oxpecker;
 import org.ny.woods.template.HTemplate;
 import org.ny.woods.utils.HUri;
@@ -914,7 +916,84 @@ public class HView<T extends View> extends HNode implements ViewPart {
     @Override
     @CallSuper
     public void onRecycle() {
+        if(msgHandler != null) {
+            if(msgEnable) {
+                msgHandler.removeListener(callback);
+                callback = null;
+            }
+            msgHandler = null;
+        }
         super.onRecycle();
         oxpecker = null;
+    }
+
+    // 能否发送消息
+    private  boolean msgEnable;
+    private MsgHandler msgHandler;
+    private MsgHandler.Callback callback;
+    private JsonValue msgHandlerCallbackFunction;
+
+
+    /**
+     * js MsgHandler监听
+     * @param value
+     */
+    public void setMsgCallback(JsonValue value) {
+        this.msgHandlerCallbackFunction = value;
+    }
+
+    /**
+     *
+     *
+     * 是否使用消息
+     * @param value
+     */
+    public void setMsgEnable(JsonValue value) {
+        setMsgEnable(value.asBoolean());
+    }
+
+    public void setMsgEnable(boolean msgEnable) {
+        this.msgEnable = msgEnable;
+    }
+
+    @CallSuper
+    public void setMsgHandler(MsgHandler msgHandler) {
+        if(callback != null) {
+            msgHandler.removeListener(callback);
+        }
+        this.msgHandler = msgHandler;
+        if(msgEnable) {
+            this.msgHandler.addListener(callback = new MsgHandler.Callback() {
+                @Override
+                public void onHandleMsg(Message msg) {
+                    HView.this.onHandleMsg(msg);
+                }
+            });
+        }
+    }
+
+    /**
+     *
+     * 发送消息
+     * @param msg
+     */
+    @Override
+    public final void sendMsg(Message msg) {
+        if(msgHandler != null) {
+            msgHandler.sendMsg(msg);
+        }
+    }
+
+    /**
+     *
+     *
+     * 接收到消息
+     * @param msg
+     */
+    protected void onHandleMsg(Message msg) {
+        if(this.msgHandlerCallbackFunction != null) {
+            FunctionExec functionExec = new FunctionExec(msgHandlerCallbackFunction, msg);
+            functionExec.exec(context, getJsChannel(), getReflect());
+        }
     }
 }

@@ -6,6 +6,7 @@ import android.view.View;
 import org.hjson.JsonObject;
 import org.ny.woods.js.channel.JsChannel;
 import org.ny.woods.os.Message;
+import org.ny.woods.os.MsgHandler;
 import org.ny.woods.template.HTemplate;
 
 /**
@@ -39,4 +40,5 @@ public interface ViewPart<T extends View> {
      * @param msg
      */
     void sendMsg(Message msg);
+    void setMsgHandler(MsgHandler handler);
 }

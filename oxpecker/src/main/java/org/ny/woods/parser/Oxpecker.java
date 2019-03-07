@@ -21,6 +21,7 @@ import org.ny.woods.js.native_object.util.Utils;
 import org.ny.woods.layout.widget.HView;
 import org.ny.woods.layout.widget.i.ViewPart;
 import org.ny.woods.os.Message;
+import org.ny.woods.os.MsgHandler;
 import org.ny.woods.parser.proxy.DynamicProxy;
 import org.ny.woods.template.HTemplate;
 import org.ny.woods.template.SimpleHTemplate;
@@ -260,6 +261,7 @@ public class Oxpecker {
         }
         InvocationHandler handler = new DynamicProxy(mLayout);
         hView = (ViewPart<? extends View>) Proxy.newProxyInstance(handler.getClass().getClassLoader(), new Class[]{ViewPart.class}, handler);
+        hView.setMsgHandler(new MsgHandler());
         return hView;
     }
 

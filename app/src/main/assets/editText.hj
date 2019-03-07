@@ -2,7 +2,7 @@
     head: {
         script:
             '''
-            //var textView = __context.findViewById("#text");
+            var textView = __context.findViewById("#text");
             //textView.setText("Hello! World!");
 
             ///////////////////////////////////////////////////////////
@@ -25,19 +25,39 @@
                 msg.setObj(text)
                 __context.sendMsg(msg)
             }
+
+            function callback(msg) {
+                if(msg.getWhat() == 0) {
+                    textView.setText(msg.getObj());
+                }
+            }
             '''
     }
     body: {
-        xuehuiniaoyu.github.oxpecker.view.ListenerTextView: {
+        {{text-view}}: {
             id: text
+            height: auto
+            textSize: 18sp
+            margin: [5, 5, 0, 0]
+            msgCallback: "javascript: callback"
+            msgEnable: true
             text: "Hello! World!"
+        }
+
+        {{text-view}}: {
+            below: "#text"
+            background: "#cc0000"
+            width: auto
+            height: auto
+            padding: [0, 0, 0, 0]
+            text: "上面的文字会随着EditText的内容变化而变化，\n组件之间使用MsgHandler传递消息。"
         }
 
         {{edit-view}}: {
             id: edit
             width: 80
             height: 20
-
+            msgEnable: true
             text: "Hello! World!"
             centerInParent: true
             textAlign: centerV

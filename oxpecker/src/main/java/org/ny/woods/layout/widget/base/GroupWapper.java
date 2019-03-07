@@ -9,6 +9,7 @@ import org.hjson.JsonObject;
 import org.hjson.JsonValue;
 import org.ny.woods.js.channel.JsChannel;
 import org.ny.woods.layout.widget.HView;
+import org.ny.woods.os.MsgHandler;
 import org.ny.woods.parser.Oxpecker;
 import org.ny.woods.template.HTemplate;
 
@@ -78,6 +79,18 @@ public class GroupWapper<T extends ViewGroup> extends HView<T> {
             for(int i = 0; i < len; i++) {
                 HView<? extends View> layoutHNode = (HView<? extends View>) getChildAt(i);
                 layoutHNode.onAdapterGetView(position, positionData, privateHTemplate);
+            }
+        }
+    }
+
+    @CallSuper
+    public void setMsgHandler(MsgHandler handler) {
+        super.setMsgHandler(handler);
+        if(getChildren() != null) {
+            int len = getChildren().size();
+            for(int i = 0; i < len; i++) {
+                HView<? extends View> layoutHNode = (HView<? extends View>) getChildAt(i);
+                layoutHNode.setMsgHandler(handler);
             }
         }
     }
