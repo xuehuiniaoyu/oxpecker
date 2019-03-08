@@ -3,6 +3,7 @@ package org.ny.woods.layout.widget.base;
 import android.content.Context;
 import android.os.Build;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.TypedValue;
@@ -189,6 +190,21 @@ public class TextWapper<T extends TextView> extends HView<T> {
             case "middle":
                 mView.setEllipsize(TextUtils.TruncateAt.MIDDLE);
                 break;
+        }
+    }
+
+    public void setTextType(JsonValue value) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.CUPCAKE) {
+            switch (value.asString()) {
+                case "password": {
+                    mView.setInputType(InputType.TYPE_CLASS_TEXT|InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                    break;
+                }
+                case "number": {
+                    mView.setInputType(InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_SIGNED);
+                    break;
+                }
+            }
         }
     }
 

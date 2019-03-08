@@ -11,6 +11,7 @@ import android.support.annotation.CallSuper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -738,6 +739,15 @@ public class HView<T extends View> extends HNode implements ViewPart {
                 case "bottom":
                     mViewLp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
                     break;
+                case "center_vertical":
+                case "center_v":
+                case "centerV":
+                    mViewLp.addRule(RelativeLayout.CENTER_VERTICAL, RelativeLayout.TRUE);
+                    break;
+                case "center_horizontal":
+                case "center_h":
+                case "centerH":
+                    mViewLp.addRule(RelativeLayout.CENTER_HORIZONTAL, RelativeLayout.TRUE);
             }
         }
     }

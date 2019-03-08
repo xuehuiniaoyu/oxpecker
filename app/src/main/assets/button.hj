@@ -5,7 +5,8 @@
             height: auto
             
             text: "Hello! World!"
-            centerInParent: true
+            //centerInParent: true
+            asParent: centerH|centerV
         }
     }
 }
