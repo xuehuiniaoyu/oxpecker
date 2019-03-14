@@ -44,6 +44,7 @@ import org.ny.woods.utils.Reflect;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -233,11 +234,12 @@ public class HView<T extends View> extends HNode implements ViewPart {
         if (c != null) {
             Type[] types = c.getActualTypeArguments();
             if (types != null && types.length == 1) {
-                try {
-                    types[0].getTypeName();
-                } catch (Throwable t) {
-                }
-                String mViewTypeClassName = reflect.clear().on(types[0]).get("name");
+                Type type = types[0];
+                type.toString();
+                String mViewTypeClassName;
+                mViewTypeClassName = reflect.clear().on(type).method("getTypeName").invoke();
+                if(mViewTypeClassName == null)
+                    mViewTypeClassName = reflect.clear().on(type).get("name");
                 mView = onGetView(mViewTypeClassName);
             } else {
                 throw new HLayoutException("Do not specify the correct generic types to <T extends View>");
@@ -245,10 +247,13 @@ public class HView<T extends View> extends HNode implements ViewPart {
         } else {
             throw new HLayoutException("Do not specify the correct generic types to <T extends View>");
         }
-//        mViewLp = reflect.clear().on(mView.getClass().getName()+"$LayoutParams").constructor(int.class, int.class)
-//                .newInstance(0, 0);
         mViewLp = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        mView.setLayoutParams(mViewLp);
+//        try {
+//            ViewGroup.LayoutParams setLp = reflect.clear().on(mView.getClass().getName() + "$LayoutParams").constructor(int.class, int.class).newInstance(-1, -1);
+//            mView.setLayoutParams(setLp);
+//        } catch (Throwable t) {
+            mView.setLayoutParams(mViewLp);
+//        }
 //        mView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
 //            @Override
 //            public void onGlobalLayout() {

@@ -97,12 +97,14 @@ public class AdapterWapper<T extends AbsListView> extends HView<T> {
                                 viewLayoutString = resource;
                                 mView.setAdapter(arrayAdapter = new JsonArrayAdapter(AdapterWapper.this).setData(array)
                                         .setLayout(viewLayoutString));
+                                arrayAdapter.notifyDataSetChanged();
                             }
                         }
                     }).load();
                 } else {
                     mView.setAdapter(arrayAdapter = new JsonArrayAdapter(AdapterWapper.this).setData(array)
                             .setLayout(viewLayoutString));
+                    arrayAdapter.notifyDataSetChanged();
                 }
             } else {
                 arrayAdapter.notifyDataSetChanged();

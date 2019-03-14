@@ -14,6 +14,7 @@
 
             var listView = __context.findViewById("#listView");
             function show(parent, view, position, id) {
+                __console.toast("show"+position)
                 var downloadQueue = __context.getHTemplate().get("downloadQueue");
                 var downloadInfo = downloadQueue.get(position); // 由于Rhino会自动转换int类型为double，所以downloadQueue对象必须重写get方法
                 var src = downloadInfo.getSrc();

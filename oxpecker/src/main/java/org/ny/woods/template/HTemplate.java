@@ -10,7 +10,6 @@ import org.ny.woods.exception.HException;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -30,7 +29,7 @@ public class HTemplate {
     };
     private Handlebars mHandlebars; {
         mHandlebars = new Handlebars();
-        mHandlebars.setCharset(Charset.forName("utf-8"));
+//        mHandlebars.setCharset(Charset.forName("utf-8"));
     }
 
     public HTemplate() {

@@ -106,7 +106,6 @@ public class Oxpecker {
                             break;
                         }
                     }
-                    asyncTytpe.hView = inflater(asyncTytpe.layout);
                     return asyncTytpe;
                 }
 
@@ -116,6 +115,7 @@ public class Oxpecker {
                         inflaterType.callback.onFailed(inflaterType.err, Oxpecker.this);
                     }
                     else {
+                        inflaterType.hView = inflater(inflaterType.layout);
                         inflaterType.callback.onSuccess(inflaterType.hView, Oxpecker.this);
                     }
                 }

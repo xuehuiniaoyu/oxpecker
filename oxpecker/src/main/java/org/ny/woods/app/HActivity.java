@@ -124,7 +124,7 @@ public class HActivity extends Activity implements Oxpecker.AsyncTytpe.Callback 
      * 从Uri加载布局
      * @param uri
      */
-    public void setContentViewFromUri(String uri, boolean async) {
+    public void setContentViewFromUri(String uri, final boolean async) {
         GetTask getTask = new GetTask(this, uri);
         getTask.setOnResourceLoadListener(new GetTask.OnResourceLoadListener() {
             @Override

@@ -4,11 +4,16 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "xuehuiniaoyu.github.oxpecker"
-        minSdkVersion 24
+        minSdkVersion 19
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
+    }
+    dexOptions {
+        javaMaxHeapSize "4g"
+        jumboMode = true
     }
 
     compileOptions {
@@ -39,4 +44,5 @@ dependencies {
     debugImplementation 'com.squareup.leakcanary:leakcanary-support-fragment:1.6.3'
 
     implementation 'com.github.google:gson:1.7'
+    implementation 'com.android.support:multidex:1.0.1'
 }

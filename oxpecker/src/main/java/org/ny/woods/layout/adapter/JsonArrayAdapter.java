@@ -9,6 +9,7 @@ import android.widget.GridView;
 
 import org.hjson.JsonArray;
 import org.hjson.JsonObject;
+import org.ny.woods.BuildConfig;
 import org.ny.woods.dimens.HDimens;
 import org.ny.woods.layout.widget.HView;
 import org.ny.woods.layout.widget.base.AdapterWapper;
@@ -137,6 +138,9 @@ public class JsonArrayAdapter extends BaseAdapter {
 //            return (View) js.exFunction(getViewJsFunctionName, JsonArrayAdapter.this, position, convertView, convertView.getTag());
 //        }
         mHViewCache.get(convertView).onAdapterGetView(position, getItem(position), privateHTemplate);
+        if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            convertView.setLayoutParams(new AbsListView.LayoutParams(-1, -1));
+        }
         return convertView;
     }
 

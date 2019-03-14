@@ -19,7 +19,6 @@ import org.ny.woods.layout.tools.UiFuncExec;
 import org.ny.woods.layout.widget.HView;
 import org.ny.woods.parser.Oxpecker;
 import org.ny.woods.template.HTemplate;
-import org.ny.woods.utils.HAsyncTask;
 
 import java.io.IOException;
 import java.util.Iterator;
@@ -40,7 +39,7 @@ public class TextWapper<T extends TextView> extends HView<T> {
     }
 
     private JsonValue textTemplate;
-    private HAsyncTask<String, CharSequence> mTextAsyncTask;
+//    private HAsyncTask<String, CharSequence> mTextAsyncTask;
 
     // 设置内容
     public void setText(JsonValue value) {
@@ -54,7 +53,9 @@ public class TextWapper<T extends TextView> extends HView<T> {
         if (textTemplate == null) {
             textTemplate = value;
         }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.CUPCAKE) {
+
+        mView.setText(bindText(text));
+        /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.CUPCAKE) {
             if (mTextAsyncTask == null) {
                 mTextAsyncTask = new HAsyncTask<String, CharSequence>(getContext().getMainLooper()) {
                     @Override
@@ -68,12 +69,12 @@ public class TextWapper<T extends TextView> extends HView<T> {
                                 try {
                                     String tmp = hTemplate.apply(text);
                                     return tmp;
-                                    /*String tmp = hTemplate.apply(text)
+                                    *//*String tmp = hTemplate.apply(text)
                                             .replace("\\&quot;", "&auot;")
                                             .replace("&quot;", "")
                                             .replace("&auot;", "\"");
                                     //.replace("\\&quot;", "\"").replace("&quot;", "");
-                                    return tmp;*/
+                                    return tmp;*//*
                                 } catch (IOException e) {
                                     throw new HException(text + "--------- template error!");
                                 }
@@ -93,7 +94,7 @@ public class TextWapper<T extends TextView> extends HView<T> {
                 };
             }
             mTextAsyncTask.exec(text);
-        }
+        }*/
 
         /*if(text.contains("{{") && text.contains("}}")) {
             if (textTemplate == null) {
@@ -111,6 +112,31 @@ public class TextWapper<T extends TextView> extends HView<T> {
         else {
             mView.setText(text);
         }*/
+    }
+
+    String bindText(String text) {
+        if (!HTemplate.isTemplate(text)) {
+            textTemplate = null;
+        }
+        if (textTemplate != null) {
+            if (hTemplate != null) {
+                try {
+                    String tmp = hTemplate.apply(text);
+                    return tmp;
+                                    /*String tmp = hTemplate.apply(text)
+                                            .replace("\\&quot;", "&auot;")
+                                            .replace("&quot;", "")
+                                            .replace("&auot;", "\"");
+                                    //.replace("\\&quot;", "\"").replace("&quot;", "");
+                                    return tmp;*/
+                } catch (IOException e) {
+                    throw new HException(text + "--------- template error!");
+                }
+            }
+            return null;
+        } else {
+            return text;
+        }
     }
 
     /**
@@ -265,9 +291,9 @@ public class TextWapper<T extends TextView> extends HView<T> {
     @Override
     public void onRecycle() {
         super.onRecycle();
-        if (mTextAsyncTask != null) {
-            mTextAsyncTask.cancel();
-            mTextAsyncTask = null;
-        }
+//        if (mTextAsyncTask != null) {
+//            mTextAsyncTask.cancel();
+//            mTextAsyncTask = null;
+//        }
     }
 }

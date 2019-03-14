@@ -57,7 +57,7 @@ public class TestDownloadActivity extends HActivity {
         }
 
         @Override
-        public DownloadInfo put(Integer key, DownloadInfo value) {
+        public DownloadInfo put(final Integer key, final DownloadInfo value) {
             new Thread() {
                 @Override
                 public void run() {
@@ -95,7 +95,7 @@ public class TestDownloadActivity extends HActivity {
                 @Override
                 public void onSuccess(ViewPart<? extends View> hView, Oxpecker oxpecker) {
                     setContentView(hView.getView());
-                    ListView listView = findViewById(IDUtil.id("#listView"));
+                    final ListView listView = findViewById(IDUtil.id("#listView"));
 
                     // 1秒刷新一次
                     mHandler = new Handler();
